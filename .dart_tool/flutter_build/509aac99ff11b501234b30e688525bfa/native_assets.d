@@ -1,1 +1,0 @@
- /Users/aleksejadrianov/Projects/events_tracker/.dart_tool/flutter_build/509aac99ff11b501234b30e688525bfa/native_assets.yaml: 

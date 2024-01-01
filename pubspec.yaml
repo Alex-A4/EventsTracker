@@ -1,5 +1,5 @@
 name: events_tracker
-description: "A new Flutter project."
+description: "A project that allows tracking different events and its repetition"
 publish_to: 'none'
 version: 0.1.0
 
@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  shared_preferences: ^2.2.2
+  table_calendar: ^3.0.9
 
 dev_dependencies:
   flutter_test:

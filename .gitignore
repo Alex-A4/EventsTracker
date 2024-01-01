@@ -36,6 +36,8 @@ bin/
 /.nb-gradle/
 
 .dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
 
 ### VS Code ###
 .vscode/
