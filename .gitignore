@@ -44,3 +44,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Generated ###
+*.g.dart
+*.freezed.dart
+*.config.dart
