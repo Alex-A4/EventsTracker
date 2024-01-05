@@ -11,8 +11,7 @@ class SharedWrapper {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  Future<void> setString(String key, String value) =>
-      _prefs.setString(key, value);
+  Future<void> setString(String key, String value) => _prefs.setString(key, value);
 
   String? getString(String key) => _prefs.getString(key);
 

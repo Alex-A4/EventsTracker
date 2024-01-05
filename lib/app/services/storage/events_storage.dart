@@ -19,11 +19,9 @@ class EventsStorage {
     final events = shared.getString(_eventsStorageKey);
 
     if (events != null) {
-      final jsonList =
-          (jsonDecode(events) as List<dynamic>).cast<Map<String, dynamic>>();
+      final jsonList = (jsonDecode(events) as List<dynamic>).cast<Map<String, dynamic>>();
 
-      _eventsListSubject
-          .add(jsonList.map((e) => EventModel.fromJson(e)).toList());
+      _eventsListSubject.add(jsonList.map((e) => EventModel.fromJson(e)).toList());
     } else {
       _eventsListSubject.add([]);
     }

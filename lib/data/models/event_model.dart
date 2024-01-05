@@ -31,8 +31,7 @@ class EventModel with _$EventModel {
         color: color,
       );
 
-  factory EventModel.fromJson(Map<String, dynamic> json) =>
-      _$EventModelFromJson(json);
+  factory EventModel.fromJson(Map<String, dynamic> json) => _$EventModelFromJson(json);
 }
 
 /// One task from [EventModel] that allows specify different types of
@@ -59,6 +58,5 @@ class EventTask with _$EventTask {
         plan: plan,
       );
 
-  factory EventTask.fromJson(Map<String, dynamic> json) =>
-      _$EventTaskFromJson(json);
+  factory EventTask.fromJson(Map<String, dynamic> json) => _$EventTaskFromJson(json);
 }

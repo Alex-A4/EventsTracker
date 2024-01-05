@@ -21,9 +21,7 @@ class CalendarDayActivities with _$CalendarDayActivities {
 
 extension CalendarDayExt on CalendarDayActivities {
   Map<String, DayActivity> getEventActivity(String eventId) => Map.fromEntries(
-        tasks
-            .where((t) => t.eventId == eventId)
-            .map((e) => MapEntry(e.taskId, e)),
+        tasks.where((t) => t.eventId == eventId).map((e) => MapEntry(e.taskId, e)),
       );
 }
 
@@ -37,6 +35,5 @@ class DayActivity with _$DayActivity {
     required int completedCount,
   }) = _DayActivity;
 
-  factory DayActivity.fromJson(Map<String, dynamic> json) =>
-      _$DayActivityFromJson(json);
+  factory DayActivity.fromJson(Map<String, dynamic> json) => _$DayActivityFromJson(json);
 }
