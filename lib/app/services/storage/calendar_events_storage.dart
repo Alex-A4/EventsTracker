@@ -20,8 +20,7 @@ class CalendarActivitiesStorage {
     final activities = shared.getString(_calendarActivitiesKey);
 
     if (activities != null) {
-      final jsonList = (jsonDecode(activities) as List<dynamic>)
-          .cast<Map<String, dynamic>>();
+      final jsonList = (jsonDecode(activities) as List<dynamic>).cast<Map<String, dynamic>>();
 
       _calendarActivitiesSubject.add(
         Map.fromEntries(
@@ -38,41 +37,60 @@ class CalendarActivitiesStorage {
     }
   }
 
-  final _calendarActivitiesSubject =
-      BehaviorSubject<Map<DateTime, CalendarDayActivities>>();
+  final _calendarActivitiesSubject = BehaviorSubject<Map<DateTime, CalendarDayActivities>>();
 
   /// Get stream for available calendar activities
   Stream<Map<DateTime, CalendarDayActivities>> get calendarActivitiesStream =>
       _calendarActivitiesSubject;
 
   /// Get current available calendar activities
-  Map<DateTime, CalendarDayActivities> get calendarActivities =>
-      _calendarActivitiesSubject.value;
+  Map<DateTime, CalendarDayActivities> get calendarActivities => _calendarActivitiesSubject.value;
 
-  /// Find or create activity for [eventId] in [date] day and increase its count.
-  Future<void> increaseDayActivity(String eventId, DateTime date) async {
+  /// Findand increase or create activity for [eventId]+[taskId] in [date] day and increase its
+  /// count for [increaseCount].
+  Future<void> increaseDayActivity({
+    required String eventId,
+    required String taskId,
+    required DateTime date,
+    int increaseCount = 1,
+  }) async {
     final activities = calendarActivities;
+    date = getPureDate(date);
     final dayActivity = activities[date];
 
     // no activity for this date, create it
     if (dayActivity == null) {
       activities[date] = CalendarDayActivities(
         date: date,
-        tasks: [DayActivity(eventId: eventId, completedCount: 1)],
+        tasks: [
+          DayActivity(
+            eventId: eventId,
+            taskId: taskId,
+            completedCount: increaseCount,
+          ),
+        ],
       );
     } else {
       final tasks = List<DayActivity>.from(dayActivity.tasks);
-      final dayTasksIndex = tasks.indexWhere((t) => t.eventId == eventId);
+      final dayTasksIndex = tasks.indexWhere((t) => t.eventId == eventId && t.taskId == taskId);
 
       // no activities for this event in that day
       if (dayTasksIndex == -1) {
         activities[date] = dayActivity.copyWith(
-          tasks: tasks..add(DayActivity(eventId: eventId, completedCount: 1)),
+          tasks: tasks
+            ..add(
+              DayActivity(
+                eventId: eventId,
+                taskId: taskId,
+                completedCount: increaseCount,
+              ),
+            ),
         );
       } else {
         final activity = tasks[dayTasksIndex];
-        tasks[dayTasksIndex] =
-            activity.copyWith(completedCount: activity.completedCount + 1);
+        tasks[dayTasksIndex] = activity.copyWith(
+          completedCount: activity.completedCount + increaseCount,
+        );
         // just increase number of completions
         activities[date] = dayActivity.copyWith(tasks: tasks);
       }
@@ -81,8 +99,16 @@ class CalendarActivitiesStorage {
     await saveActivities(activities);
   }
 
-  Future<void> decreaseDayActivity(String eventId, DateTime date) async {
+  /// Find and decrease or remove activity for [eventId]+[taskId] in [date] day and decrease its
+  ///  count for [decreaseCount].
+  Future<void> decreaseDayActivity({
+    required String eventId,
+    required String taskId,
+    required DateTime date,
+    int decreaseCount = 1,
+  }) async {
     final activities = calendarActivities;
+    date = getPureDate(date);
     final dayActivity = activities[date];
 
     // no activity for this date, ignore
@@ -90,7 +116,9 @@ class CalendarActivitiesStorage {
       return;
     } else {
       final tasks = List<DayActivity>.from(dayActivity.tasks);
-      final dayTasksIndex = tasks.indexWhere((t) => t.eventId == eventId);
+      final dayTasksIndex = tasks.indexWhere(
+        (t) => t.eventId == eventId && t.taskId == taskId,
+      );
 
       // no activities for this event in that day, ignore
       if (dayTasksIndex == -1) {
@@ -98,9 +126,10 @@ class CalendarActivitiesStorage {
       } else {
         final activity = tasks[dayTasksIndex];
 
-        if (activity.completedCount > 1) {
-          tasks[dayTasksIndex] =
-              activity.copyWith(completedCount: activity.completedCount - 1);
+        if (activity.completedCount - decreaseCount >= 1) {
+          tasks[dayTasksIndex] = activity.copyWith(
+            completedCount: activity.completedCount - decreaseCount,
+          );
         } else {
           tasks.removeAt(dayTasksIndex);
         }
@@ -128,4 +157,7 @@ class CalendarActivitiesStorage {
     );
     _calendarActivitiesSubject.add(activities);
   }
+
+  /// Get date cleared from time
+  DateTime getPureDate(DateTime date) => DateTime(date.year, date.month, date.day);
 }

@@ -19,11 +19,20 @@ class CalendarDayActivities with _$CalendarDayActivities {
       _$CalendarDayActivitiesFromJson(json);
 }
 
-/// How many times some event was completed during some day
+extension CalendarDayExt on CalendarDayActivities {
+  Map<String, DayActivity> getEventActivity(String eventId) => Map.fromEntries(
+        tasks
+            .where((t) => t.eventId == eventId)
+            .map((e) => MapEntry(e.taskId, e)),
+      );
+}
+
+/// How many times some task from event was completed during some day
 @freezed
 class DayActivity with _$DayActivity {
   const factory DayActivity({
     required String eventId,
+    required String taskId,
     // count cannot be less then 1. If it's then activity should be deleted
     required int completedCount,
   }) = _DayActivity;
