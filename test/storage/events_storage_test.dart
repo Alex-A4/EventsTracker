@@ -18,7 +18,7 @@ void main() {
   final event1 = EventModel.create(
     eventTitle: 'Trainings',
     tasks: [task1_1, task1_2],
-    color: Colors.blue.value,
+    color: Colors.blue,
   );
 
   final task2_1 = EventTask.create(taskName: 'Read books', plan: 30);
@@ -27,7 +27,7 @@ void main() {
   final event2 = EventModel.create(
     eventTitle: 'Creative development',
     tasks: [task2_1, task2_2],
-    color: Colors.red.value,
+    color: Colors.red,
   );
 
   setUp(() {

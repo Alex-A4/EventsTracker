@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:events_tracker/data/data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,13 +19,13 @@ class EventModel with _$EventModel {
     // list of tasks that should be completed to complete event in general
     required List<EventTask> tasks,
     // color is hex-decilam 32-bit int, for example 0xFFAABBCC
-    required int color,
+    @colorJsonConverter required Color color,
   }) = _EventModel;
 
   factory EventModel.create({
     required String eventTitle,
     required List<EventTask> tasks,
-    required int color,
+    required Color color,
   }) =>
       EventModel(
         id: const Uuid().v4(),
