@@ -1,3 +1,4 @@
 {
-    "calendarTitle": "Activity calendar"
+    "calendarTitle": "Activity calendar",
+    "activitiesFor": "Activities for {}"
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:events_tracker/bootstrap/bootstrap.dart';
 import 'package:events_tracker/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ Future<void> bootstrap(
       WidgetsFlutterBinding.ensureInitialized();
 
       await configureDi();
+      await configureLocalization();
 
       FlutterError.onError = (details) {
         log.severe(details.exceptionAsString(), details, details.stack);

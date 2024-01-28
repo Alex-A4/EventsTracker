@@ -40,7 +40,7 @@ bin/
 .flutter-plugins-dependencies
 
 ### VS Code ###
-.vscode/
+# .vscode/
 
 ### Mac OS ###
 .DS_Store

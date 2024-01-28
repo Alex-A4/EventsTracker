@@ -13,28 +13,22 @@ part 'calendar_bloc.freezed.dart';
 /// Bloc that produces list of activities to UI and reacts for changing it
 class CalendarBloc extends Bloc<CalendarBlocEvent, CalendarBlocState> {
   CalendarBloc({
-    required this.activitiesStorage,
-    required this.eventsStorage,
+    required this.calendarService,
   }) : super(const CalendarBlocState(activities: {}, eventColors: {})) {
     _registerHandlers();
 
-    _activitiesSub = activitiesStorage.calendarActivitiesStream.listen(
+    _activitiesSub = calendarService.calendarActivitiesStream.listen(
       (acts) => add(CalendarBlocEvent.updateActivities(acts)),
     );
-    _eventsSub = eventsStorage.eventsStream.listen(
-      (events) => add(
-        CalendarBlocEvent.updateColors(
-          Map.fromEntries(events.map((e) => MapEntry(e.id, e.color))),
-        ),
-      ),
+    _eventsSub = calendarService.eventsColorsStream.listen(
+      (colors) => add(CalendarBlocEvent.updateColors(colors)),
     );
   }
 
   late StreamSubscription<dynamic> _activitiesSub;
   late StreamSubscription<dynamic> _eventsSub;
 
-  final CalendarActivitiesStorage activitiesStorage;
-  final EventsStorage eventsStorage;
+  final CalendarService calendarService;
 
   void _registerHandlers() {
     on<_UpdateColors>(

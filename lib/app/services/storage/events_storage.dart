@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:events_tracker/app/services/storage/storage.dart';
 import 'package:events_tracker/data/data.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -32,8 +34,15 @@ class EventsStorage {
   /// Get stream for tracking current available events
   Stream<List<EventModel>> get eventsStream => _eventsListSubject;
 
+  /// Stream with mapped colors and event ids
+  Stream<Map<String, Color>> get eventsColorsStream => eventsStream.map(convertEventsToIdColorMap);
+
   /// Get current available events
   List<EventModel> get eventsList => _eventsListSubject.value;
+
+  /// Convert list of events to map id-color
+  Map<String, Color> convertEventsToIdColorMap(List<EventModel> events) =>
+      Map.fromEntries(events.map((e) => MapEntry(e.id, e.color)));
 
   /// Add new event to storage and update stream
   Future<void> addEvent(EventModel event) async {

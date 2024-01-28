@@ -1,4 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/feature/calendar/calendar.dart';
+import 'package:events_tracker/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -22,7 +25,17 @@ class CalendarView extends StatelessWidget {
       child: Column(
         children: [
           TableCalendar<DayActivity>(
-            onDaySelected: (selected, focused) {},
+            locale: context.locale.languageCode,
+            onDaySelected: (selected, focused) {
+              final data = activities[cropDate(selected)];
+              if (data != null) {
+                showCalendarEventsSheet(
+                  context: context,
+                  data: data,
+                  colors: eventColors,
+                );
+              }
+            },
             holidayPredicate: (d) => d.weekday == 6 || d.weekday == 7,
             currentDay: todayDay,
             eventLoader: getEvents,
@@ -40,13 +53,14 @@ class CalendarView extends StatelessWidget {
               isTodayHighlighted: true,
               holidayTextStyle: const TextStyle(color: Colors.red),
               holidayDecoration: const BoxDecoration(shape: BoxShape.circle),
-              todayTextStyle: TextStyle(color: Colors.grey[400]),
+              todayTextStyle: const TextStyle(color: Colors.black),
+              canMarkersOverflow: false,
               todayDecoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.blue[700],
+                border: Border.all(color: Colors.blue[700]!, width: 3),
               ),
             ),
-            selectedDayPredicate: (d) => false, //cropDate(d) == cropDate(selectedDate),
+            selectedDayPredicate: (d) => false,
           ),
         ],
       ),
@@ -66,23 +80,48 @@ class CalendarView extends StatelessWidget {
     }
 
     final uniqueIds = events.map((e) => e.eventId).toSet();
-    final uniqueColors = uniqueIds.map((id) => eventColors[id]!).take(_maxDisplayedEventColors);
+    final uniqueColors = uniqueIds.map((id) => eventColors[id]!).toList();
+
+    if (uniqueColors.length > _maxDisplayedEventColors) {
+      return _countDisplayedColors(uniqueColors.length);
+    }
 
     return Row(
-      children: uniqueColors.map(_eventColorMarker).toList(),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: uniqueColors
+          .mapIndexed(
+            (i, color) => _eventColorMarker(color, i < uniqueColors.length - 1),
+          )
+          .toList(),
     );
   }
 
   DateTime? cropDate(DateTime? date) =>
       date == null ? null : DateTime(date.year, date.month, date.day);
 
-  Widget _eventColorMarker(Color color) {
-    return Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
+  Widget _eventColorMarker(Color color, bool hasNext) {
+    return Padding(
+      padding: EdgeInsets.only(right: hasNext ? 2 : 0),
+      child: EventColorWidget.small(color: color),
+    );
+  }
+
+  Widget _countDisplayedColors(int length) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: Container(
+        width: 20,
+        height: 20,
+        margin: const EdgeInsets.only(right: 4, bottom: 4),
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          color: Colors.blue,
+          shape: BoxShape.circle,
+        ),
+        child: Text(
+          length.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

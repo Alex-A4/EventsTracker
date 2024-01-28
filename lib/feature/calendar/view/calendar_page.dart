@@ -11,8 +11,7 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CalendarBloc>(
       create: (_) => CalendarBloc(
-        activitiesStorage: inject(),
-        eventsStorage: inject(),
+        calendarService: inject(),
       ),
       child: Scaffold(
         appBar: AppBar(

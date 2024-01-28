@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 enum SupportedLocaleCodes {
-  en,
-  ko;
+  ru,
+  en;
 
   Locale get locale => Locale(name);
 
@@ -15,7 +15,7 @@ enum SupportedLocaleCodes {
   }
 }
 
-const fallbackLocaleCode = SupportedLocaleCodes.en;
+const fallbackLocaleCode = SupportedLocaleCodes.ru;
 
 final supportedLocales = SupportedLocaleCodes.values
     .map(
