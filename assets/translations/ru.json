@@ -1,4 +1,9 @@
 {
     "calendarTitle": "Календарь активности",
-    "activitiesFor": "Активности за {}"
+    "activitiesFor": "Активности за {}",
+    "eventsSettingsTitle": "Настройки событий",
+    "addEvent": "Добавить событие",
+    "wannaRemoveEvent": "Вы действительно хотите удалить событие?",
+    "cancelWord": "Отменить",
+    "deleteWord": "Удалить"
 }

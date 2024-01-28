@@ -1,4 +1,9 @@
 {
     "calendarTitle": "Activity calendar",
-    "activitiesFor": "Activities for {}"
+    "activitiesFor": "Activities for {}",
+    "eventsSettingsTitle": "Events settings",
+    "addEvent": "Add event",
+    "wannaRemoveEvent": "Are you sure want to remove event?",
+    "cancelWord": "Cancel",
+    "deleteWord": "Delete"
 }

@@ -1,8 +1,10 @@
+import 'package:events_tracker/app/router/router.dart';
 import 'package:events_tracker/di/di.dart';
 import 'package:events_tracker/feature/calendar/calendar.dart';
 import 'package:events_tracker/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
@@ -16,6 +18,12 @@ class CalendarPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(LocaleKeys.calendarTitle.tr()),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () => SettingsRoute().go(context),
+            ),
+          ],
         ),
         body: BlocBuilder<CalendarBloc, CalendarBlocState>(
           builder: (context, state) {

@@ -18,15 +18,42 @@ class EventsStorage {
 
   @PostConstruct()
   void init() {
-    final events = shared.getString(_eventsStorageKey);
+    // final events = shared.getString(_eventsStorageKey);
 
-    if (events != null) {
-      final jsonList = (jsonDecode(events) as List<dynamic>).cast<Map<String, dynamic>>();
+    _eventsListSubject.add([
+      const EventModel(
+        id: '1',
+        eventTitle: '1',
+        tasks: [
+          EventTask(id: '4', taskName: '4', plan: 10),
+        ],
+        color: Colors.blue,
+      ),
+      const EventModel(
+        id: '2',
+        eventTitle: '2',
+        tasks: [
+          EventTask(id: '5', taskName: '5', plan: 20),
+        ],
+        color: Colors.green,
+      ),
+      const EventModel(
+        id: '3',
+        eventTitle: '3',
+        tasks: [
+          EventTask(id: '6', taskName: '6', plan: 15),
+        ],
+        color: Colors.red,
+      ),
+    ]);
 
-      _eventsListSubject.add(jsonList.map((e) => EventModel.fromJson(e)).toList());
-    } else {
-      _eventsListSubject.add([]);
-    }
+    // if (events != null) {
+    //   final jsonList = (jsonDecode(events) as List<dynamic>).cast<Map<String, dynamic>>();
+
+    //   _eventsListSubject.add(jsonList.map((e) => EventModel.fromJson(e)).toList());
+    // } else {
+    //   _eventsListSubject.add([]);
+    // }
   }
 
   final _eventsListSubject = BehaviorSubject<List<EventModel>>();
@@ -46,7 +73,7 @@ class EventsStorage {
 
   /// Add new event to storage and update stream
   Future<void> addEvent(EventModel event) async {
-    final events = eventsList;
+    final events = List<EventModel>.from(eventsList);
     events.add(event);
     await saveEvents(events);
   }
@@ -54,7 +81,7 @@ class EventsStorage {
   /// Remove event from the list.
   /// If there is no events after deletion, then clear storage by the key.
   Future<void> removeEvent(String id) async {
-    final events = eventsList;
+    final events = List<EventModel>.from(eventsList);
     events.removeWhere((e) => e.id == id);
 
     if (events.isEmpty) {
@@ -67,7 +94,7 @@ class EventsStorage {
 
   /// Update event by its id
   Future<void> updateEvent(EventModel event) async {
-    final events = eventsList;
+    final events = List<EventModel>.from(eventsList);
     final index = events.indexWhere((e) => e.id == event.id);
     if (index != -1) {
       events[index] = event;

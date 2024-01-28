@@ -80,7 +80,7 @@ class CalendarView extends StatelessWidget {
     }
 
     final uniqueIds = events.map((e) => e.eventId).toSet();
-    final uniqueColors = uniqueIds.map((id) => eventColors[id]!).toList();
+    final uniqueColors = uniqueIds.map((id) => eventColors[id]).whereNotNull().toList();
 
     if (uniqueColors.length > _maxDisplayedEventColors) {
       return _countDisplayedColors(uniqueColors.length);

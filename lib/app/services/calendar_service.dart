@@ -122,4 +122,7 @@ class CalendarService {
 
     _mappedEventsSubject.add(dayStatistics);
   }
+
+  /// Proxy method to remove event by its id
+  Future<void> removeEvent(String id) => eventsStorage.removeEvent(id);
 }
