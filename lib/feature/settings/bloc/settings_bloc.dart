@@ -14,7 +14,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc(this.calendarService) : super(const SettingsState(events: [])) {
     _registerHandlers();
 
-    _eventsSub = calendarService.eventsStream.listen(
+    _eventsSub = calendarService.mappedEventsStream.listen(
       (events) => add(SettingsEvent.updateEvents(events)),
     );
   }

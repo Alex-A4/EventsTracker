@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// Returns false if user decided to remove event.
 Future<bool> showConfirmRemoveEventSheet(
   BuildContext context,
-  EventModel model,
+  EventModelWithStatistic model,
 ) async {
   final result = await showCommonBottomSheet<bool>(
     context: context,
@@ -25,7 +25,7 @@ class ConfirmRemoveEventSheet extends StatelessWidget {
     super.key,
   });
 
-  final EventModel model;
+  final EventModelWithStatistic model;
 
   @override
   Widget build(BuildContext context) {

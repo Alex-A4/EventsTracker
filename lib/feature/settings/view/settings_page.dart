@@ -1,3 +1,4 @@
+import 'package:events_tracker/app/router/router.dart';
 import 'package:events_tracker/di/di.dart';
 import 'package:events_tracker/feature/settings/settings.dart';
 import 'package:events_tracker/generated/generated.dart';
@@ -12,15 +13,21 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<SettingsBloc>(
       create: (_) => SettingsBloc(inject()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(LocaleKeys.eventsSettingsTitle.tr()),
-        ),
-        body: BlocBuilder<SettingsBloc, SettingsState>(
-          builder: (context, state) {
-            return SettingsView(events: state.events);
-          },
-        ),
+      child: BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(LocaleKeys.eventsSettingsTitle.tr()),
+            ),
+            body: SettingsView(events: state.events),
+            floatingActionButton: state.events.isEmpty
+                ? null
+                : FloatingActionButton(
+                    onPressed: () => AddEventRoute().go(context),
+                    child: const Icon(Icons.add),
+                  ),
+          );
+        },
       ),
     );
   }

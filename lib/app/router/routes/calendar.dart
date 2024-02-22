@@ -10,6 +10,11 @@ part 'calendar.g.dart';
   routes: [
     TypedGoRoute<SettingsRoute>(
       path: 'settings',
+      routes: [
+        TypedGoRoute<AddEventRoute>(
+          path: 'addEvent',
+        ),
+      ],
     ),
   ],
 )

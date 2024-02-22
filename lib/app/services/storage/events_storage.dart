@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:events_tracker/app/services/storage/storage.dart';
 import 'package:events_tracker/data/data.dart';
@@ -23,25 +22,25 @@ class EventsStorage {
     _eventsListSubject.add([
       const EventModel(
         id: '1',
-        eventTitle: '1',
+        eventTitle: 'Спорт',
         tasks: [
-          EventTask(id: '4', taskName: '4', plan: 10),
+          EventTask(id: '4', taskName: 'Посещение тренировок', plan: 10),
         ],
         color: Colors.blue,
       ),
       const EventModel(
         id: '2',
-        eventTitle: '2',
+        eventTitle: 'Кулинария',
         tasks: [
-          EventTask(id: '5', taskName: '5', plan: 20),
+          EventTask(id: '5', taskName: 'Приготовить 20 ужинов', plan: 20),
         ],
         color: Colors.green,
       ),
       const EventModel(
         id: '3',
-        eventTitle: '3',
+        eventTitle: 'Обучение',
         tasks: [
-          EventTask(id: '6', taskName: '6', plan: 15),
+          EventTask(id: '6', taskName: 'Посмотреть лекции', plan: 15),
         ],
         color: Colors.red,
       ),
@@ -61,15 +60,8 @@ class EventsStorage {
   /// Get stream for tracking current available events
   Stream<List<EventModel>> get eventsStream => _eventsListSubject;
 
-  /// Stream with mapped colors and event ids
-  Stream<Map<String, Color>> get eventsColorsStream => eventsStream.map(convertEventsToIdColorMap);
-
   /// Get current available events
   List<EventModel> get eventsList => _eventsListSubject.value;
-
-  /// Convert list of events to map id-color
-  Map<String, Color> convertEventsToIdColorMap(List<EventModel> events) =>
-      Map.fromEntries(events.map((e) => MapEntry(e.id, e.color)));
 
   /// Add new event to storage and update stream
   Future<void> addEvent(EventModel event) async {

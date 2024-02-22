@@ -4,13 +4,17 @@ import 'dart:ui';
 class CalendarDayStatistics {
   CalendarDayStatistics({
     required this.date,
-    required this.tasks,
+    required this.tasksByEvent,
+    required this.allTasks,
   });
 
   final DateTime date;
 
   /// Key - event id, value - list of tasks for this event in that day
-  final Map<String, List<CalendarDayTaskStatistics>> tasks;
+  final Map<String, List<CalendarDayTaskStatistics>> tasksByEvent;
+
+  /// List of all tasks for all events in that day
+  final List<CalendarDayTaskStatistics> allTasks;
 }
 
 /// Statistics for task in a single day and partly for all days

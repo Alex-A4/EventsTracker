@@ -1,3 +1,4 @@
+import 'package:events_tracker/data/data.dart';
 import 'package:flutter/widgets.dart';
 
 /// Simple widget that displays color for event
@@ -10,7 +11,7 @@ class EventColorWidget extends StatelessWidget {
   const EventColorWidget.medium({
     required this.color,
     super.key,
-  }) : size = 20;
+  }) : size = 16;
 
   final Color color;
   final double size;
@@ -22,7 +23,8 @@ class EventColorWidget extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: color,
+        gradient: color.eventGradient,
+        border: color.eventBorder,
       ),
     );
   }

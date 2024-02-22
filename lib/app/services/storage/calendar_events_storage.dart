@@ -20,8 +20,8 @@ class CalendarActivitiesStorage {
     // final activities = shared.getString(_calendarActivitiesKey);
 
     _calendarActivitiesSubject.add({
-      DateTime(2024, 1, 13): CalendarDayActivities(
-        date: DateTime(2024, 1, 13),
+      DateTime(2024, 2, 22): CalendarDayActivities(
+        date: DateTime(2024, 2, 22),
         tasks: const [
           DayActivity(
             eventId: '1',

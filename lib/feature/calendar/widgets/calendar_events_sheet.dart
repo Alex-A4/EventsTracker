@@ -9,8 +9,7 @@ final _eventDayFormatterThatYear = DateFormat('dd MMM');
 
 Future<void> showCalendarEventsSheet({
   required BuildContext context,
-  required CalendarDayActivities data,
-  required Map<String, Color> colors,
+  required CalendarDayStatistics data,
 }) {
   return showCommonBottomSheet<void>(
     context: context,
@@ -22,7 +21,6 @@ Future<void> showCalendarEventsSheet({
     ]),
     body: (context, scrollController) => CalendarEventsSheet(
       data: data,
-      colors: colors,
       controller: scrollController,
     ),
   );
@@ -32,13 +30,11 @@ Future<void> showCalendarEventsSheet({
 class CalendarEventsSheet extends StatelessWidget {
   const CalendarEventsSheet({
     required this.data,
-    required this.colors,
     required this.controller,
     super.key,
   });
 
-  final CalendarDayActivities data;
-  final Map<String, Color> colors;
+  final CalendarDayStatistics data;
   final ScrollController controller;
 
   @override
@@ -47,15 +43,24 @@ class CalendarEventsSheet extends StatelessWidget {
       controller: controller,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: data.tasks.map(_taskItem).toList(),
+        children: data.allTasks.map(_taskItem).toList(),
       ),
     );
   }
 
-  Widget _taskItem(DayActivity activity) {
+  Widget _taskItem(CalendarDayTaskStatistics activity) {
     return ListTile(
-      leading: EventColorWidget.medium(color: colors[activity.eventId]!),
-      title: Text(activity.completedCount.toString()),
+      contentPadding: EdgeInsets.zero,
+      leading: EventColorWidget.medium(color: activity.eventColor),
+      title: Text(activity.taskName),
+      subtitle: Text(
+        LocaleKeys.taskCompletedForDayWithCountAndPercent.tr(
+          args: [
+            activity.completedInDay.toString(),
+            activity.completedForDayPercent.toString(),
+          ],
+        ),
+      ),
     );
   }
 }

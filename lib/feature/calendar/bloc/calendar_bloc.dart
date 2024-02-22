@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:events_tracker/app/services/services.dart';
@@ -14,26 +13,19 @@ part 'calendar_bloc.freezed.dart';
 class CalendarBloc extends Bloc<CalendarBlocEvent, CalendarBlocState> {
   CalendarBloc({
     required this.calendarService,
-  }) : super(const CalendarBlocState(activities: {}, eventColors: {})) {
+  }) : super(const CalendarBlocState(activities: {})) {
     _registerHandlers();
 
-    _activitiesSub = calendarService.calendarActivitiesStream.listen(
+    _activitiesSub = calendarService.mappedEventsActivityStream.listen(
       (acts) => add(CalendarBlocEvent.updateActivities(acts)),
-    );
-    _eventsSub = calendarService.eventsColorsStream.listen(
-      (colors) => add(CalendarBlocEvent.updateColors(colors)),
     );
   }
 
   late StreamSubscription<dynamic> _activitiesSub;
-  late StreamSubscription<dynamic> _eventsSub;
 
   final CalendarService calendarService;
 
   void _registerHandlers() {
-    on<_UpdateColors>(
-      (event, emit) => emit(state.copyWith(eventColors: event.eventColors)),
-    );
     on<_UpdateActivities>(
       (event, emit) => emit(state.copyWith(activities: event.activities)),
     );
@@ -42,7 +34,6 @@ class CalendarBloc extends Bloc<CalendarBlocEvent, CalendarBlocState> {
   @override
   Future<void> close() {
     _activitiesSub.cancel();
-    _eventsSub.cancel();
 
     return super.close();
   }

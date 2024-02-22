@@ -10,12 +10,10 @@ const _maxDisplayedEventColors = 3;
 class CalendarView extends StatelessWidget {
   const CalendarView({
     required this.activities,
-    required this.eventColors,
     super.key,
   });
 
-  final Map<DateTime, CalendarDayActivities> activities;
-  final Map<String, Color> eventColors;
+  final Map<DateTime, CalendarDayStatistics> activities;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +22,7 @@ class CalendarView extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          TableCalendar<DayActivity>(
+          TableCalendar<CalendarDayTaskStatistics>(
             locale: context.locale.languageCode,
             onDaySelected: (selected, focused) {
               final data = activities[cropDate(selected)];
@@ -32,8 +30,9 @@ class CalendarView extends StatelessWidget {
                 showCalendarEventsSheet(
                   context: context,
                   data: data,
-                  colors: eventColors,
                 );
+              } else {
+                // TODO(alex-a4): oepn dialog to add activity for day
               }
             },
             holidayPredicate: (d) => d.weekday == 6 || d.weekday == 7,
@@ -43,7 +42,7 @@ class CalendarView extends StatelessWidget {
             availableCalendarFormats: const {CalendarFormat.month: ''},
             availableGestures: AvailableGestures.horizontalSwipe,
             headerStyle: const HeaderStyle(titleCentered: true),
-            calendarBuilders: CalendarBuilders<DayActivity>(
+            calendarBuilders: CalendarBuilders<CalendarDayTaskStatistics>(
               markerBuilder: markerBuilder,
             ),
             lastDay: todayDay.add(const Duration(days: 360)),
@@ -67,20 +66,20 @@ class CalendarView extends StatelessWidget {
     );
   }
 
-  List<DayActivity> getEvents(DateTime day) => activities[cropDate(day)]?.tasks ?? [];
+  List<CalendarDayTaskStatistics> getEvents(DateTime day) =>
+      activities[cropDate(day)]?.allTasks ?? [];
 
   /// Builder of marker to display day with menstruation start
   Widget markerBuilder(
     BuildContext context,
     DateTime date,
-    List<DayActivity> events,
+    List<CalendarDayTaskStatistics> events,
   ) {
     if (events.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    final uniqueIds = events.map((e) => e.eventId).toSet();
-    final uniqueColors = uniqueIds.map((id) => eventColors[id]).whereNotNull().toList();
+    final uniqueColors = events.map((e) => e.eventColor).toSet();
 
     if (uniqueColors.length > _maxDisplayedEventColors) {
       return _countDisplayedColors(uniqueColors.length);

@@ -18,7 +18,11 @@ class CalendarService {
     required this.eventsStorage,
   });
 
-  final _mappedEventsSubject = BehaviorSubject<Map<DateTime, CalendarDayStatistics>>();
+  /// See [mappedEventsActivityStream] for docs
+  final _mappedEventsActivitySubject = BehaviorSubject<Map<DateTime, CalendarDayStatistics>>();
+
+  /// See [mappedEventsStream]
+  final _mappedEventsSubject = BehaviorSubject<List<EventModelWithStatistic>>();
 
   @PostConstruct()
   void init() {
@@ -42,20 +46,26 @@ class CalendarService {
     );
   }
 
+  /// Mapped activities where statistic for every day contains all necessary information.
+  ///
+  /// It's better to use this method in UI instead of
+  /// [CalendarActivitiesStorage.calendarActivitiesStream], because the last one do not
+  /// verify deleting events.
+  /// TODO(alex-a4): replace SP storage to SQL with relations
   Stream<Map<DateTime, CalendarDayStatistics>> get mappedEventsActivityStream =>
-      _mappedEventsSubject.stream;
+      _mappedEventsActivitySubject.stream;
 
-  Map<DateTime, CalendarDayStatistics> get mappedEventsActivity => _mappedEventsSubject.value;
+  /// Getter for [mappedEventsActivityStream]
+  Map<DateTime, CalendarDayStatistics> get mappedEventsActivity =>
+      _mappedEventsActivitySubject.value;
 
-  /// Proxy for activities
-  Stream<Map<DateTime, CalendarDayActivities>> get calendarActivitiesStream =>
-      calendarStorage.calendarActivitiesStream;
+  /// Mapped events where every task contains all progress during all days with information.
+  ///
+  /// It's better to use this method in UI instead of [EventsStorage.eventsStream].
+  Stream<List<EventModelWithStatistic>> get mappedEventsStream => _mappedEventsSubject.stream;
 
-  /// Proxy for events
-  Stream<List<EventModel>> get eventsStream => eventsStorage.eventsStream;
-
-  /// Proxy for colors
-  Stream<Map<String, Color>> get eventsColorsStream => eventsStorage.eventsColorsStream;
+  /// Getter for [mappedEventsStream]
+  List<EventModelWithStatistic> get mappedEvents => _mappedEventsSubject.value;
 
   void _mapCalendarAndEvents({
     required List<EventModel> events,
@@ -69,48 +79,57 @@ class CalendarService {
     // Allows simplify searching objects after [tasksStatistics] is filled to avoid long
     // cycle iterations
     final tasksObjects = <String, List<CalendarDayTaskStatistics>>{};
+    // Uses to map events.
+    // key1 - task id, key2 - date of activity, value - activity of task
+    final tasksMappedByDay = <String, Map<DateTime, CalendarDayTaskStatistics>>{};
 
     activities.forEach((date, activities) {
       final mappedTasks = <String, List<CalendarDayTaskStatistics>>{};
+      final allTasks = <CalendarDayTaskStatistics>[];
 
-      // ignore: avoid_function_literals_in_foreach_calls
-      activities.tasks.forEach(
-        (activity) {
-          final event = mappedEvents[activity.eventId]!;
-          final task = event.tasks.firstWhere((t) => t.id == activity.taskId);
+      for (final activity in activities.tasks) {
+        final event = mappedEvents[activity.eventId];
+        if (event == null) continue;
 
-          if (tasksStatistics[task.id] == null) {
-            tasksStatistics[task.id] = activity.completedCount;
-          } else {
-            tasksStatistics[task.id] = tasksStatistics[task.id]! + activity.completedCount;
-          }
-          final taskStat = CalendarDayTaskStatistics(
-            eventColor: event.color,
-            eventId: event.id,
-            eventTitle: event.eventTitle,
-            completedInDay: activity.completedCount,
-            plan: task.plan,
-            taskId: task.id,
-            taskName: task.taskName,
-          );
+        final task = event.tasks.firstWhere((t) => t.id == activity.taskId);
 
-          if (tasksObjects[task.id] == null) {
-            tasksObjects[task.id] = [taskStat];
-          } else {
-            tasksObjects[task.id]!.add(taskStat);
-          }
+        if (tasksStatistics[task.id] == null) {
+          tasksStatistics[task.id] = activity.completedCount;
+        } else {
+          tasksStatistics[task.id] = tasksStatistics[task.id]! + activity.completedCount;
+        }
 
-          if (mappedTasks[event.id] == null) {
-            mappedTasks[event.id] = [taskStat];
-          } else {
-            mappedTasks[event.id]!.add(taskStat);
-          }
-        },
-      );
+        final taskStat = CalendarDayTaskStatistics(
+          eventColor: event.color,
+          eventId: event.id,
+          eventTitle: event.eventTitle,
+          completedInDay: activity.completedCount,
+          plan: task.plan,
+          taskId: task.id,
+          taskName: task.taskName,
+        );
+
+        if (tasksObjects[task.id] == null) {
+          tasksObjects[task.id] = [taskStat];
+          tasksMappedByDay[task.id] = {date: taskStat};
+        } else {
+          tasksObjects[task.id]!.add(taskStat);
+          tasksMappedByDay[task.id]![date] = taskStat;
+        }
+
+        if (mappedTasks[event.id] == null) {
+          mappedTasks[event.id] = [taskStat];
+        } else {
+          mappedTasks[event.id]!.add(taskStat);
+        }
+
+        allTasks.add(taskStat);
+      }
 
       dayStatistics[date] = CalendarDayStatistics(
         date: date,
-        tasks: mappedTasks,
+        tasksByEvent: mappedTasks,
+        allTasks: allTasks,
       );
     });
 
@@ -120,9 +139,37 @@ class CalendarService {
       (key, value) => tasksObjects[key]!.forEach((task) => task.completedGeneral = value),
     );
 
-    _mappedEventsSubject.add(dayStatistics);
+    _mappedEventsActivitySubject.add(dayStatistics);
+
+    _mappedEventsSubject.add(events.map((e) {
+      return EventModelWithStatistic(
+        id: e.id,
+        eventTitle: e.eventTitle,
+        tasks: e.tasks.map((t) {
+          return EventTaskWithStatistic(
+            id: t.id,
+            taskName: t.taskName,
+            plan: t.plan,
+            completedGeneral: tasksStatistics[t.id] ?? 0,
+            completionsByDays: tasksMappedByDay[t.id] ?? {},
+          );
+        }).toList(),
+        color: e.color,
+      );
+    }).toList());
   }
 
   /// Proxy method to remove event by its id
   Future<void> removeEvent(String id) => eventsStorage.removeEvent(id);
+
+  /// Create new event
+  Future<void> createEvent({
+    required String eventName,
+    required Color color,
+    required List<EventTask> tasks,
+  }) async {
+    await eventsStorage.addEvent(
+      EventModel.create(eventTitle: eventName, tasks: tasks, color: color),
+    );
+  }
 }
