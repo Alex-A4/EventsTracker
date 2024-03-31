@@ -2,6 +2,7 @@
     "calendarTitle": "Календарь активности",
     "activitiesFor": "Активности за {}",
     "eventsSettingsTitle": "Настройки событий",
+    "noEvents": "События отсутствуют",
     "addEvent": "Добавить событие",
     "wannaRemoveEvent": "Вы действительно хотите удалить событие?",
     "cancelWord": "Отменить",
@@ -21,7 +22,13 @@
     "planTitle": "План",
     "planDescription": "(число)",
     "planHint": "10",
+    "addNewTask": "Добавить задачу",
     "wannaStopAddingEvent": "Прекратить процесс создания события?",
     "continueWord": "Продолжить",
-    "stopWord": "Прекратить"
+    "stopWord": "Прекратить",
+    "changeWord": "Изменить",
+    "selectActivityAtDate": "Выберите активность за {}",
+    "selectActivityEvent": "Выберите событие",
+    "selectActivityTask": "Выберите задачу",
+    "chooseWord": "Выбрать"
 }

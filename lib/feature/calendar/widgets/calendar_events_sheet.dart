@@ -4,9 +4,14 @@ import 'package:events_tracker/feature/widgets/widgets.dart';
 import 'package:events_tracker/generated/generated.dart';
 import 'package:flutter/material.dart';
 
-final _eventDayFormatterOtherYear = DateFormat('dd MMM yyyy');
-final _eventDayFormatterThatYear = DateFormat('dd MMM');
+final eventDayFormatterOtherYear = DateFormat('dd MMM yyyy');
+final eventDayFormatterThatYear = DateFormat('dd MMM');
 
+String formatTitleForDate(DateTime date) =>
+    (date.year == DateTime.now().year ? eventDayFormatterThatYear : eventDayFormatterOtherYear)
+        .format(date);
+
+/// Helper function to display [CalendarEventsSheet]
 Future<void> showCalendarEventsSheet({
   required BuildContext context,
   required CalendarDayStatistics data,
@@ -14,11 +19,19 @@ Future<void> showCalendarEventsSheet({
   return showCommonBottomSheet<void>(
     context: context,
     title: LocaleKeys.activitiesFor.tr(args: [
-      (data.date.year == DateTime.now().year
-              ? _eventDayFormatterThatYear
-              : _eventDayFormatterOtherYear)
-          .format(data.date)
+      formatTitleForDate(data.date),
     ]),
+    titleAction: Builder(
+      builder: (context) {
+        return PrimaryIconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).pop();
+            showCalendarSelectActivitySheet(context: context, date: data.date);
+          },
+        );
+      },
+    ),
     body: (context, scrollController) => CalendarEventsSheet(
       data: data,
       controller: scrollController,

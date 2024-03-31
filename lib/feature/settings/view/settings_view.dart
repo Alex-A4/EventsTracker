@@ -1,7 +1,5 @@
-import 'package:events_tracker/app/router/router.dart';
 import 'package:events_tracker/data/data.dart';
-import 'package:events_tracker/feature/settings/widgets/event_and_tasks_widget.dart';
-import 'package:events_tracker/generated/generated.dart';
+import 'package:events_tracker/feature/settings/settings.dart';
 import 'package:flutter/material.dart';
 
 class SettingsView extends StatelessWidget {
@@ -15,7 +13,7 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (events.isEmpty) {
-      return _addEventsFullButton();
+      return const AddEventButton();
     }
 
     return ListView.separated(
@@ -28,17 +26,6 @@ class SettingsView extends StatelessWidget {
           event: event,
         );
       },
-    );
-  }
-
-  Widget _addEventsFullButton() {
-    return Center(
-      child: Builder(builder: (context) {
-        return ElevatedButton(
-          onPressed: () => AddEventRoute().go(context),
-          child: Text(LocaleKeys.addEvent.tr()),
-        );
-      }),
     );
   }
 }

@@ -13,6 +13,11 @@ class EventColorWidget extends StatelessWidget {
     super.key,
   }) : size = 16;
 
+  const EventColorWidget.big({
+    required this.color,
+    super.key,
+  }) : size = 20;
+
   final Color color;
   final double size;
 

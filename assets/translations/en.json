@@ -2,6 +2,7 @@
     "calendarTitle": "Activity calendar",
     "activitiesFor": "Activities for {}",
     "eventsSettingsTitle": "Events settings",
+    "noEvents": "There is no events",
     "addEvent": "Add event",
     "wannaRemoveEvent": "Are you sure want to remove event?",
     "cancelWord": "Cancel",
@@ -21,7 +22,13 @@
     "planTitle": "Plan",
     "planDescription": "(number)",
     "planHint": "10",
+    "addNewTask": "Add task",
     "wannaStopAddingEvent": "Wanna stop adding event?",
     "continueWord": "Continue",
-    "stopWord": "Stop"
+    "stopWord": "Stop",
+    "changeWord": "Change",
+    "selectActivityAtDate": "Select activity at {}",
+    "selectActivityEvent": "Select event",
+    "selectActivityTask": "Select task",
+    "chooseWord": "Select"
 }

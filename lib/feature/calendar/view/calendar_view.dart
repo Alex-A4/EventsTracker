@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:events_tracker/data/data.dart';
 import 'package:events_tracker/feature/calendar/calendar.dart';
+import 'package:events_tracker/feature/widgets/widgets.dart';
 import 'package:events_tracker/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -25,14 +26,15 @@ class CalendarView extends StatelessWidget {
           TableCalendar<CalendarDayTaskStatistics>(
             locale: context.locale.languageCode,
             onDaySelected: (selected, focused) {
-              final data = activities[cropDate(selected)];
+              final date = cropDate(selected);
+              final data = activities[date];
               if (data != null) {
                 showCalendarEventsSheet(
                   context: context,
                   data: data,
                 );
-              } else {
-                // TODO(alex-a4): oepn dialog to add activity for day
+              } else if (date != null) {
+                showCalendarSelectActivitySheet(context: context, date: date);
               }
             },
             holidayPredicate: (d) => d.weekday == 6 || d.weekday == 7,

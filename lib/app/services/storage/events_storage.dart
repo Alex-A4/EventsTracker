@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:events_tracker/app/services/storage/storage.dart';
 import 'package:events_tracker/data/data.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -17,42 +16,15 @@ class EventsStorage {
 
   @PostConstruct()
   void init() {
-    // final events = shared.getString(_eventsStorageKey);
+    final events = shared.getString(_eventsStorageKey);
 
-    _eventsListSubject.add([
-      const EventModel(
-        id: '1',
-        eventTitle: 'Спорт',
-        tasks: [
-          EventTask(id: '4', taskName: 'Посещение тренировок', plan: 10),
-        ],
-        color: Colors.blue,
-      ),
-      const EventModel(
-        id: '2',
-        eventTitle: 'Кулинария',
-        tasks: [
-          EventTask(id: '5', taskName: 'Приготовить 20 ужинов', plan: 20),
-        ],
-        color: Colors.green,
-      ),
-      const EventModel(
-        id: '3',
-        eventTitle: 'Обучение',
-        tasks: [
-          EventTask(id: '6', taskName: 'Посмотреть лекции', plan: 15),
-        ],
-        color: Colors.red,
-      ),
-    ]);
+    if (events != null) {
+      final jsonList = (jsonDecode(events) as List<dynamic>).cast<Map<String, dynamic>>();
 
-    // if (events != null) {
-    //   final jsonList = (jsonDecode(events) as List<dynamic>).cast<Map<String, dynamic>>();
-
-    //   _eventsListSubject.add(jsonList.map((e) => EventModel.fromJson(e)).toList());
-    // } else {
-    //   _eventsListSubject.add([]);
-    // }
+      _eventsListSubject.add(jsonList.map((e) => EventModel.fromJson(e)).toList());
+    } else {
+      _eventsListSubject.add([]);
+    }
   }
 
   final _eventsListSubject = BehaviorSubject<List<EventModel>>();

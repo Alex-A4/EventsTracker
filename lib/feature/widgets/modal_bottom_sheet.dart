@@ -24,6 +24,7 @@ Future<T?> showCommonBottomSheet<T>({
   required BuildContext context,
   required CommonSheetBodyBuilder body,
   String? title,
+  Widget? titleAction,
   String? subtitle,
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 16),
   bool expand = false,
@@ -53,6 +54,7 @@ Future<T?> showCommonBottomSheet<T>({
       padding: padding,
       subtitle: subtitle,
       title: title,
+      titleAction: titleAction,
       centerTitle: centerTitle,
       body: body,
     ),
@@ -75,6 +77,7 @@ Future<T?> showCommonBottomSheet<T>({
 ModalSheetRoute<T> commonBottomSheetRoute<T>({
   required CommonSheetBodyBuilder body,
   String? title,
+  Widget? titleAction,
   String? subtitle,
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 16),
   bool expand = false,
@@ -94,6 +97,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
       padding: padding,
       subtitle: subtitle,
       title: title,
+      titleAction: titleAction,
       body: body,
       centerTitle: centerTitle,
     ),
@@ -117,11 +121,13 @@ class CommonBottomSheetWidget extends StatelessWidget {
     required this.useAppBackgroundColor,
     required this.centerTitle,
     this.title,
+    this.titleAction,
     this.subtitle,
     super.key,
   });
 
   final CommonSheetBodyBuilder body;
+  final Widget? titleAction;
   final String? title;
   final String? subtitle;
   final EdgeInsets padding;
@@ -135,13 +141,9 @@ class CommonBottomSheetWidget extends StatelessWidget {
     const dragWidgetSize = 4.0;
     const dragWidgetMargin = 8.0;
     // final colors = context.themeStyle.colors;
-
-    final bodyWidget = Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        if (title != null)
-          Container(
+    Widget? titleWidget = title == null
+        ? null
+        : Container(
             margin: const EdgeInsets.symmetric(horizontal: 16) +
                 EdgeInsets.only(
                   top: 20 + dragWidgetSize + dragWidgetMargin * 2,
@@ -155,7 +157,24 @@ class CommonBottomSheetWidget extends StatelessWidget {
                 textAlign: centerTitle ? TextAlign.center : TextAlign.start,
               ),
             ),
+          );
+    if (titleAction != null) {
+      titleWidget = Row(
+        children: [
+          Expanded(
+            child: titleWidget ?? const SizedBox.shrink(),
           ),
+          const SizedBox(width: 8),
+          titleAction!,
+        ],
+      );
+    }
+
+    final bodyWidget = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (titleWidget != null) titleWidget,
         if (subtitle != null)
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16) +

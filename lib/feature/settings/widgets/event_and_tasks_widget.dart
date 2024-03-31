@@ -1,6 +1,6 @@
 import 'package:events_tracker/data/data.dart';
-import 'package:events_tracker/feature/calendar/calendar.dart';
 import 'package:events_tracker/feature/settings/settings.dart';
+import 'package:events_tracker/feature/widgets/widgets.dart';
 import 'package:events_tracker/generated/generated.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';

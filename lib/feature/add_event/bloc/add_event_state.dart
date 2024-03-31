@@ -12,5 +12,8 @@ class AddEventState with _$AddEventState {
 }
 
 extension AddEventStateX on AddEventState {
-  bool get isEmpty => eventName.isEmpty && tasks.isEmpty;
+  bool get isEmpty =>
+      eventName.isEmpty || tasks.isEmpty || tasks.any((t) => t.taskName.isEmpty || t.plan == 0);
+
+  bool get canBeCreated => !isEmpty;
 }

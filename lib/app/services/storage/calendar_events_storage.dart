@@ -17,47 +17,24 @@ class CalendarActivitiesStorage {
 
   @PostConstruct()
   void init() {
-    // final activities = shared.getString(_calendarActivitiesKey);
+    final activities = shared.getString(_calendarActivitiesKey);
 
-    _calendarActivitiesSubject.add({
-      DateTime(2024, 2, 22): CalendarDayActivities(
-        date: DateTime(2024, 2, 22),
-        tasks: const [
-          DayActivity(
-            eventId: '1',
-            taskId: '4',
-            completedCount: 3,
-          ),
-          DayActivity(
-            eventId: '2',
-            taskId: '5',
-            completedCount: 20,
-          ),
-          DayActivity(
-            eventId: '3',
-            taskId: '6',
-            completedCount: 11,
-          ),
-        ],
-      ),
-    });
+    if (activities != null) {
+      final jsonList = (jsonDecode(activities) as List<dynamic>).cast<Map<String, dynamic>>();
 
-    // if (activities != null) {
-    //   final jsonList = (jsonDecode(activities) as List<dynamic>).cast<Map<String, dynamic>>();
-
-    //   _calendarActivitiesSubject.add(
-    //     Map.fromEntries(
-    //       jsonList.map(
-    //         (e) {
-    //           final c = CalendarDayActivities.fromJson(e);
-    //           return MapEntry(c.date, c);
-    //         },
-    //       ),
-    //     ),
-    //   );
-    // } else {
-    //   _calendarActivitiesSubject.add({});
-    // }
+      _calendarActivitiesSubject.add(
+        Map.fromEntries(
+          jsonList.map(
+            (e) {
+              final c = CalendarDayActivities.fromJson(e);
+              return MapEntry(c.date, c);
+            },
+          ),
+        ),
+      );
+    } else {
+      _calendarActivitiesSubject.add({});
+    }
   }
 
   final _calendarActivitiesSubject = BehaviorSubject<Map<DateTime, CalendarDayActivities>>();

@@ -1,3 +1,4 @@
+import 'package:events_tracker/data/data.dart';
 import 'package:events_tracker/di/di.dart';
 import 'package:events_tracker/feature/add_event/add_event.dart';
 import 'package:events_tracker/generated/generated.dart';
@@ -12,7 +13,12 @@ class AddEventPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<AddEventBloc>(
       create: (_) => AddEventBloc(inject()),
-      child: BlocBuilder<AddEventBloc, AddEventState>(
+      child: BlocConsumer<AddEventBloc, AddEventState>(
+        listener: (context, state) {
+          if (state.created) {
+            Navigator.of(context).pop();
+          }
+        },
         builder: (context, state) {
           return PopScope(
             canPop: state.isEmpty,
@@ -23,9 +29,14 @@ class AddEventPage extends StatelessWidget {
                 Navigator.of(context).pop();
               }
             },
-            child: Scaffold(
-              appBar: AppBar(
-                title: Text(LocaleKeys.newEventTitle.tr()),
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Scaffold(
+                appBar: AppBar(
+                  backgroundColor: state.eventColor.evenAppBarColor,
+                  title: Text(LocaleKeys.newEventTitle.tr()),
+                ),
+                body: AddEventView(state: state),
               ),
             ),
           );

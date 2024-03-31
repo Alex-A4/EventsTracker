@@ -67,6 +67,9 @@ class CalendarService {
   /// Getter for [mappedEventsStream]
   List<EventModelWithStatistic> get mappedEvents => _mappedEventsSubject.value;
 
+  /// Proxy for getting current available events
+  Stream<List<EventModel>> get eventsStream => eventsStorage.eventsStream;
+
   void _mapCalendarAndEvents({
     required List<EventModel> events,
     required Map<DateTime, CalendarDayActivities> activities,
@@ -161,6 +164,20 @@ class CalendarService {
 
   /// Proxy method to remove event by its id
   Future<void> removeEvent(String id) => eventsStorage.removeEvent(id);
+
+  /// Proxy method to increase activity for specified event, task and date
+  Future<void> increaseDayActivity({
+    required String eventId,
+    required String taskId,
+    required DateTime date,
+    int increaseCount = 1,
+  }) =>
+      calendarStorage.increaseDayActivity(
+        eventId: eventId,
+        taskId: taskId,
+        date: date,
+        increaseCount: increaseCount,
+      );
 
   /// Create new event
   Future<void> createEvent({
