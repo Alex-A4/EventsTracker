@@ -26,7 +26,7 @@ Future<void> showCalendarSelectActivitySheet({
   );
 }
 
-class CalendarActivitySelectSheet extends StatelessWidget {
+class CalendarActivitySelectSheet extends StatefulWidget {
   const CalendarActivitySelectSheet({
     required this.controller,
     super.key,
@@ -35,13 +35,48 @@ class CalendarActivitySelectSheet extends StatelessWidget {
   final ScrollController controller;
 
   @override
+  State<CalendarActivitySelectSheet> createState() => _CalendarActivitySelectSheetState();
+}
+
+class _CalendarActivitySelectSheetState extends State<CalendarActivitySelectSheet> {
+  final _amountFocus = FocusNode();
+  final _amountController = TextEditingController();
+  bool _amountLastFocusValue = false;
+
+  @override
+  void initState() {
+    _amountFocus.addListener(() {
+      // focus removed when it was
+      if (_amountLastFocusValue && !_amountFocus.hasFocus) {
+        context.read<SelectActivityCubit>().updateActivityAmount(
+              int.tryParse(_amountController.text) ?? 0,
+            );
+      }
+
+      _amountLastFocusValue = _amountFocus.hasFocus;
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _amountFocus.dispose();
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      controller: controller,
+      controller: widget.controller,
       child: BlocConsumer<SelectActivityCubit, SelectActivityState>(
         listener: (context, state) {
           state.whenOrNull(
-            data: (_, created, __, ___) {
+            data: (_, created, __, ___, selectedAmount) {
+              if (selectedAmount != null && selectedAmount.toString() != _amountController.text) {
+                _amountController.text = selectedAmount.toString();
+              }
+
               if (created) {
                 Navigator.of(context).pop();
               }
@@ -51,7 +86,7 @@ class CalendarActivitySelectSheet extends StatelessWidget {
         builder: (context, state) {
           return state.when(
             loading: () => const Center(child: CircularProgressIndicator()),
-            data: (events, _, selectedEvent, selectedTask) {
+            data: (events, _, selectedEvent, selectedTask, selectedAmount) {
               if (events.isEmpty) {
                 return AddEventButton(
                   callbackAction: (ctx) => Navigator.of(ctx).pop(),
@@ -98,7 +133,27 @@ class CalendarActivitySelectSheet extends StatelessWidget {
                     ),
                   ),
                   AnimatedCollapse(
-                    show: selectedTask != null && selectedEvent != null,
+                    show: selectedEvent != null,
+                    child: Builder(
+                      builder: (context) {
+                        if (selectedEvent == null) return const SizedBox.shrink();
+
+                        return AmountInputWidget(
+                          controller: _amountController,
+                          hintText: '0',
+                          title: LocaleKeys.selectActivityAmount.tr(),
+                          focus: _amountFocus,
+                          increaseCallback:
+                              context.read<SelectActivityCubit>().increaseActivityAmount,
+                          decreaseCallback:
+                              context.read<SelectActivityCubit>().decreaseActivityAmount,
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  AnimatedCollapse(
+                    show: selectedTask != null && selectedEvent != null && selectedAmount != null,
                     child: PrimaryButton(
                       text: LocaleKeys.chooseWord.tr(),
                       onPressed: context.read<SelectActivityCubit>().createActivity,

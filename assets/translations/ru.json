@@ -30,5 +30,6 @@
     "selectActivityAtDate": "Выберите активность за {}",
     "selectActivityEvent": "Выберите событие",
     "selectActivityTask": "Выберите задачу",
+    "selectActivityAmount": "Выберите завершенное количество",
     "chooseWord": "Выбрать"
 }

@@ -36,6 +36,7 @@ class SelectActivityCubit extends Cubit<SelectActivityState> {
         created: false,
         selectedEvent: event,
         selectedTask: event.tasks.first,
+        selectedAmount: 1,
       ));
     }
   }
@@ -47,14 +48,48 @@ class SelectActivityCubit extends Cubit<SelectActivityState> {
     }
   }
 
+  void updateActivityAmount(int value) {
+    final s = state;
+    if (s is _Data && s.selectedAmount != value) {
+      emit(s.copyWith(selectedAmount: value));
+    }
+  }
+
+  void increaseActivityAmount() {
+    final s = state;
+    if (s is _Data) {
+      emit(s.copyWith(selectedAmount: s.selectedAmount == null ? 1 : s.selectedAmount! + 1));
+    }
+  }
+
+  void decreaseActivityAmount() {
+    final s = state;
+    if (s is _Data) {
+      emit(
+        s.copyWith(
+          selectedAmount: s.selectedAmount == null
+              ? 1
+              : s.selectedAmount! > 1
+                  ? s.selectedAmount! - 1
+                  : 1,
+        ),
+      );
+    }
+  }
+
   void createActivity() async {
     final s = state;
 
-    if (s is _Data && s.selectedEvent != null && s.selectedTask != null) {
+    if (s is _Data &&
+        s.selectedEvent != null &&
+        s.selectedTask != null &&
+        s.selectedAmount != null &&
+        s.selectedAmount! > 0) {
       service.increaseDayActivity(
         date: date,
         eventId: s.selectedEvent!.id,
         taskId: s.selectedTask!.id,
+        increaseCount: s.selectedAmount ?? 1,
       );
 
       emit(s.copyWith(created: true));

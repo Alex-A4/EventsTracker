@@ -3,7 +3,6 @@ import 'package:events_tracker/feature/add_event/add_event.dart';
 import 'package:events_tracker/feature/widgets/widgets.dart';
 import 'package:events_tracker/generated/generated.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddEventTaskWidget extends StatefulWidget {
@@ -106,43 +105,23 @@ class _AddEventTaskWidgetState extends State<AddEventTaskWidget> {
           ),
         ),
         const SizedBox(height: 4),
-        InputWidget(
-          focusNode: _planFocus,
+        AmountInputWidget(
+          focus: _planFocus,
           controller: _planController,
-          textInputAction: TextInputAction.done,
           title: LocaleKeys.planTitle.tr(),
           subtitle: LocaleKeys.planDescription.tr(),
           hintText: LocaleKeys.planHint.tr(),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(RegExp(r'\s')),
-            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-          ],
-          action: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              PrimaryIconButton(
-                onPressed: () => context.read<AddEventBloc>().add(
-                      AddEventEvent.changeTaskPlan(id: widget.task.id, plan: widget.task.plan + 1),
+          increaseCallback: () => context.read<AddEventBloc>().add(
+                AddEventEvent.changeTaskPlan(id: widget.task.id, plan: widget.task.plan + 1),
+              ),
+          decreaseCallback: widget.task.plan <= 0
+              ? null
+              : () => context.read<AddEventBloc>().add(
+                    AddEventEvent.changeTaskPlan(
+                      id: widget.task.id,
+                      plan: widget.task.plan - 1,
                     ),
-                icon: const Icon(Icons.arrow_drop_up_outlined),
-                size: PrimaryIconButtonSize.small,
-              ),
-              PrimaryIconButton(
-                onPressed: widget.task.plan <= 0
-                    ? null
-                    : () => context.read<AddEventBloc>().add(
-                          AddEventEvent.changeTaskPlan(
-                            id: widget.task.id,
-                            plan: widget.task.plan - 1,
-                          ),
-                        ),
-                icon: const Icon(Icons.arrow_drop_down_outlined),
-                size: PrimaryIconButtonSize.small,
-              ),
-            ],
-          ),
+                  ),
         ),
       ],
     );

@@ -8,3 +8,4 @@ export 'color_picker.dart';
 export 'animated_collapse.dart';
 export 'press_scale_widget.dart';
 export 'select_dropdown.dart';
+export 'amount_input.dart';

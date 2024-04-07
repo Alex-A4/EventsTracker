@@ -30,5 +30,6 @@
     "selectActivityAtDate": "Select activity at {}",
     "selectActivityEvent": "Select event",
     "selectActivityTask": "Select task",
+    "selectActivityAmount": "Select completed amount",
     "chooseWord": "Select"
 }

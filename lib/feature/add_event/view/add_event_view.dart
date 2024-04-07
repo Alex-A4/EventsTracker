@@ -37,7 +37,7 @@ class _AddEventViewState extends State<AddEventView> {
           top: 0,
           left: 16,
           right: 16,
-          bottom: !canBeCreated ? 16 : kButtonHeight + 8,
+          bottom: !canBeCreated ? 16 : kButtonHeight + 16,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

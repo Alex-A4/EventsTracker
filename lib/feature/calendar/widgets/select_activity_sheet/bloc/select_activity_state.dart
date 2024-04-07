@@ -9,5 +9,6 @@ class SelectActivityState with _$SelectActivityState {
     required bool created,
     EventModel? selectedEvent,
     EventTask? selectedTask,
+    int? selectedAmount,
   }) = _Data;
 }
