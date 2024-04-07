@@ -8,10 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AddEventView extends StatefulWidget {
   const AddEventView({
     required this.state,
+    required this.isUpdate,
     super.key,
   });
 
   final AddEventState state;
+  final bool isUpdate;
 
   @override
   State<AddEventView> createState() => _AddEventViewState();
@@ -19,6 +21,15 @@ class AddEventView extends StatefulWidget {
 
 class _AddEventViewState extends State<AddEventView> {
   final _eventNameController = TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.state.eventName.isNotEmpty) {
+      _eventNameController.text = widget.state.eventName;
+    }
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -82,7 +93,7 @@ class _AddEventViewState extends State<AddEventView> {
               onPressed: widget.state.isLoading
                   ? null
                   : () => context.read<AddEventBloc>().add(const AddEventEvent.createEvent()),
-              text: LocaleKeys.createWord.tr(),
+              text: widget.isUpdate ? LocaleKeys.updateWord.tr() : LocaleKeys.createWord.tr(),
             ),
           ),
         ),

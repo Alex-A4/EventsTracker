@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:events_tracker/data/models/models.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -165,6 +166,10 @@ class CalendarService {
   /// Proxy method to remove event by its id
   Future<void> removeEvent(String id) => eventsStorage.removeEvent(id);
 
+  /// Get event by id or null if there is no such one
+  EventModel? getEventById(String eventId) =>
+      eventsStorage.eventsList.firstWhereOrNull((e) => e.id == eventId);
+
   /// Proxy method to increase activity for specified event, task and date
   Future<void> increaseDayActivity({
     required String eventId,
@@ -187,6 +192,23 @@ class CalendarService {
   }) async {
     await eventsStorage.addEvent(
       EventModel.create(eventTitle: eventName, tasks: tasks, color: color),
+    );
+  }
+
+  /// Update old event in storage with new data
+  Future<void> updateEvent({
+    required String eventId,
+    required String eventName,
+    required Color color,
+    required List<EventTask> tasks,
+  }) async {
+    await eventsStorage.updateEvent(
+      EventModel(
+        id: eventId,
+        eventTitle: eventName,
+        tasks: tasks,
+        color: color,
+      ),
     );
   }
 }

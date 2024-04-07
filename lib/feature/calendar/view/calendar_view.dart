@@ -19,6 +19,7 @@ class CalendarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final todayDay = DateTime.now();
+    final textTheme = Theme.of(context).textTheme;
 
     return SingleChildScrollView(
       child: Column(
@@ -37,16 +38,34 @@ class CalendarView extends StatelessWidget {
                 showCalendarSelectActivitySheet(context: context, date: date);
               }
             },
+            daysOfWeekStyle: const DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                color: Color(0xFF4F4F4F),
+                fontWeight: FontWeight.w600,
+              ),
+              weekendStyle: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             holidayPredicate: (d) => d.weekday == 6 || d.weekday == 7,
             currentDay: todayDay,
             eventLoader: getEvents,
             startingDayOfWeek: StartingDayOfWeek.monday,
             availableCalendarFormats: const {CalendarFormat.month: ''},
             availableGestures: AvailableGestures.horizontalSwipe,
-            headerStyle: const HeaderStyle(titleCentered: true),
+            headerStyle: HeaderStyle(
+              titleCentered: true,
+              headerMargin: EdgeInsets.zero,
+              headerPadding: EdgeInsets.zero,
+              titleTextStyle: textTheme.titleMedium!.copyWith(
+                fontStyle: FontStyle.italic,
+              ),
+            ),
             calendarBuilders: CalendarBuilders<CalendarDayTaskStatistics>(
               markerBuilder: markerBuilder,
             ),
+            daysOfWeekHeight: 25,
             lastDay: todayDay.add(const Duration(days: 360)),
             firstDay: todayDay.subtract(const Duration(days: 360)),
             focusedDay: todayDay,
@@ -54,11 +73,12 @@ class CalendarView extends StatelessWidget {
               isTodayHighlighted: true,
               holidayTextStyle: const TextStyle(color: Colors.red),
               holidayDecoration: const BoxDecoration(shape: BoxShape.circle),
-              todayTextStyle: const TextStyle(color: Colors.black),
+              todayTextStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
               canMarkersOverflow: false,
+              tablePadding: const EdgeInsets.all(8),
               todayDecoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.blue[700]!, width: 3),
+                border: Border.all(color: Theme.of(context).colorScheme.primary, width: 3),
               ),
             ),
             selectedDayPredicate: (d) => false,

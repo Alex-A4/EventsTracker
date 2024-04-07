@@ -51,7 +51,7 @@ class InputWidget extends StatelessWidget {
                 if (subtitle != null)
                   TextSpan(
                     text: subtitle,
-                    style: textTheme.titleSmall?.copyWith(color: Colors.grey),
+                    style: textTheme.bodySmall,
                   ),
               ],
             ),
@@ -69,11 +69,11 @@ class InputWidget extends StatelessWidget {
       focusNode: focusNode,
       textInputAction: textInputAction,
       cursorRadius: const Radius.circular(90),
-      style: Theme.of(context).textTheme.bodyLarge,
+      style: textTheme.bodyMedium,
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         hintText: hintText,
-        hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.grey[400]),
+        hintStyle: textTheme.bodyMedium?.copyWith(color: Colors.grey[400]),
       ),
     );
     if (action != null) {

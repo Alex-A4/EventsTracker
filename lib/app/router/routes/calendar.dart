@@ -14,6 +14,9 @@ part 'calendar.g.dart';
         TypedGoRoute<AddEventRoute>(
           path: 'addEvent',
         ),
+        TypedGoRoute<EditEventRoute>(
+          path: 'editEvent/:eventId',
+        ),
       ],
     ),
   ],

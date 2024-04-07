@@ -1,3 +1,4 @@
+import 'package:events_tracker/app/router/router.dart';
 import 'package:events_tracker/data/data.dart';
 import 'package:events_tracker/feature/settings/settings.dart';
 import 'package:events_tracker/feature/widgets/widgets.dart';
@@ -62,7 +63,7 @@ class _EventAndTasksSettingsWidgetState extends State<EventAndTasksSettingsWidge
             icon: Icons.edit,
             backgroundColor: Colors.blue[500]!,
             borderRadius: BorderRadius.circular(12),
-            onPressed: (_) {},
+            onPressed: (context) => EditEventRoute(widget.event.id).go(context),
           ),
           const SizedBox(width: 2),
           SlidableAction(
@@ -88,7 +89,9 @@ class _EventAndTasksSettingsWidgetState extends State<EventAndTasksSettingsWidge
     return ListTile(
       horizontalTitleGap: 8,
       leading: EventColorWidget.medium(color: widget.event.color),
-      title: Text(widget.event.eventTitle),
+      title: Text(
+        widget.event.eventTitle,
+      ),
       subtitle: Text(
         LocaleKeys.eventCompletedCountAndPercent.tr(
           args: [widget.event.completedGeneralPercent.toString()],

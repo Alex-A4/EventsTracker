@@ -54,7 +54,12 @@ class _AddEventTaskWidgetState extends State<AddEventTaskWidget> {
       _planLastFocusValue = _planFocus.hasFocus;
     });
 
+    if (widget.task.taskName.isNotEmpty) {
+      _nameController.text = widget.task.taskName;
+    }
+
     _updatePlan(widget.task.plan);
+
     super.initState();
   }
 

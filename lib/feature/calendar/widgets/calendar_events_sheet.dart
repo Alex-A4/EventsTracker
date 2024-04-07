@@ -62,18 +62,22 @@ class CalendarEventsSheet extends StatelessWidget {
   }
 
   Widget _taskItem(CalendarDayTaskStatistics activity) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      leading: EventColorWidget.medium(color: activity.eventColor),
-      title: Text(activity.taskName),
-      subtitle: Text(
-        LocaleKeys.taskCompletedForDayWithCountAndPercent.tr(
-          args: [
-            activity.completedInDay.toString(),
-            activity.completedForDayPercent.toString(),
-          ],
+    return Builder(builder: (context) {
+      return ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: EventColorWidget.medium(color: activity.eventColor),
+        title: Text(
+          activity.taskName,
         ),
-      ),
-    );
+        subtitle: Text(
+          LocaleKeys.taskCompletedForDayWithCountAndPercent.tr(
+            args: [
+              activity.completedInDay.toString(),
+              activity.completedForDayPercent.toString(),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

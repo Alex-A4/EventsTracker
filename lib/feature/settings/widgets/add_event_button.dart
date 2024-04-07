@@ -17,7 +17,10 @@ class AddEventButton extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(LocaleKeys.noEvents.tr()),
+          Text(
+            LocaleKeys.noEvents.tr(),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: () {

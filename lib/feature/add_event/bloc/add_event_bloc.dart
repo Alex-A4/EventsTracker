@@ -11,25 +11,35 @@ part 'add_event_event.dart';
 part 'add_event_bloc.freezed.dart';
 
 class AddEventBloc extends Bloc<AddEventEvent, AddEventState> {
-  AddEventBloc(this.service)
+  AddEventBloc(this.service, this.oldEvent)
       : super(
-          AddEventState(
-            eventName: '',
-            // generate random color from 35 to 225 (without corners)
-            eventColor: Color.fromARGB(
-              255,
-              Random().nextInt(190) + 35,
-              Random().nextInt(190) + 35,
-              Random().nextInt(190) + 35,
-            ),
-            tasks: [],
-            created: false,
-            isLoading: false,
-          ),
+          oldEvent == null
+              ? AddEventState(
+                  eventName: '',
+                  // generate random color from 35 to 225 (without corners)
+                  eventColor: Color.fromARGB(
+                    255,
+                    Random().nextInt(190) + 35,
+                    Random().nextInt(190) + 35,
+                    Random().nextInt(190) + 35,
+                  ),
+                  tasks: [],
+                  created: false,
+                  isLoading: false,
+                )
+              : AddEventState(
+                  eventName: oldEvent.eventTitle,
+                  // generate random color from 35 to 225 (without corners)
+                  eventColor: oldEvent.color,
+                  tasks: oldEvent.tasks,
+                  created: false,
+                  isLoading: false,
+                ),
         ) {
     _registerHandlers();
   }
 
+  EventModel? oldEvent;
   final CalendarService service;
 
   void _registerHandlers() {
@@ -37,11 +47,20 @@ class AddEventBloc extends Bloc<AddEventEvent, AddEventState> {
       (_, emit) async {
         emit(state.copyWith(isLoading: true));
 
-        await service.createEvent(
-          eventName: state.eventName,
-          color: state.eventColor,
-          tasks: state.tasks,
-        );
+        if (oldEvent != null) {
+          await service.updateEvent(
+            eventId: oldEvent!.id,
+            eventName: state.eventName,
+            color: state.eventColor,
+            tasks: state.tasks,
+          );
+        } else {
+          await service.createEvent(
+            eventName: state.eventName,
+            color: state.eventColor,
+            tasks: state.tasks,
+          );
+        }
 
         emit(state.copyWith(isLoading: false, created: true));
       },

@@ -140,7 +140,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const dragWidgetSize = 4.0;
     const dragWidgetMargin = 8.0;
-    // final colors = context.themeStyle.colors;
+    final textTheme = Theme.of(context).textTheme;
     Widget? titleWidget = title == null
         ? null
         : Container(
@@ -153,7 +153,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
               alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
               child: Text(
                 title!,
-                // style: StyleRes.h2.copyWith(color: colors.textPrimary),
+                style: textTheme.titleLarge,
                 textAlign: centerTitle ? TextAlign.center : TextAlign.start,
               ),
             ),
@@ -184,9 +184,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
                 ),
             child: Text(
               subtitle!,
-              // style: StyleRes.primaryRegular.copyWith(
-              //   color: colors.textPrimary,
-              // ),
+              style: textTheme.bodySmall,
             ),
           ),
         Flexible(
@@ -202,7 +200,6 @@ class CommonBottomSheetWidget extends StatelessWidget {
     );
 
     return Material(
-      // color: useAppBackgroundColor ? colors.appBackground : colors.backgroundSecondary,
       child: SafeArea(
         minimum: avoidBottomInsets ? const EdgeInsets.only(bottom: 24) : EdgeInsets.zero,
         child: Padding(

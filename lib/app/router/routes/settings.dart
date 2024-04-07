@@ -10,5 +10,14 @@ class SettingsRoute extends GoRouteData {
 
 class AddEventRoute extends GoRouteData {
   @override
-  Widget build(BuildContext context, GoRouterState state) => const AddEventPage();
+  Widget build(BuildContext context, GoRouterState state) => const AddOrEditEventPage();
+}
+
+class EditEventRoute extends GoRouteData {
+  final String eventId;
+
+  EditEventRoute(this.eventId);
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => AddOrEditEventPage(eventId: eventId);
 }

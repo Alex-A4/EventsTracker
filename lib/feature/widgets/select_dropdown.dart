@@ -60,11 +60,13 @@ class SelectDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final title = titleChild ??
         (titleText == null
             ? null
             : Text(
                 titleText!,
+                style: textTheme.titleMedium,
               ));
 
     final subtitle = subtitleChild ??
@@ -72,6 +74,7 @@ class SelectDropdown<T> extends StatelessWidget {
             ? null
             : Text(
                 subtitleText!,
+                style: textTheme.bodySmall,
               ));
 
     return PressScaleWidget(
@@ -86,28 +89,21 @@ class SelectDropdown<T> extends StatelessWidget {
                 if (subtitle != null) subtitle,
               ],
             ),
-            const SizedBox(height: 8),
           ],
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: currentValue == null
-                      ? const SizedBox.shrink()
-                      : _itemBuilder(
-                          values.firstWhere((e) => e.value == currentValue),
-                        ),
-                ),
-                const SizedBox(width: 8),
-                const Icon(
-                  Icons.keyboard_arrow_right_rounded,
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: currentValue == null
+                    ? const SizedBox.shrink()
+                    : _itemBuilder(
+                        values.firstWhere((e) => e.value == currentValue),
+                      ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(
+                Icons.keyboard_arrow_right_rounded,
+              ),
+            ],
           ),
         ],
       ),
@@ -121,11 +117,26 @@ class SelectDropdown<T> extends StatelessWidget {
   }) {
     return Builder(
       builder: (context) {
-        return ListTile(
-          leading: value.icon,
-          onTap: onPressed,
-          title: Text(value.title),
-          trailing: isSelected ? const Icon(Icons.check_rounded) : null,
+        final style = Theme.of(context).textTheme.bodyMedium;
+
+        return PressScaleWidget(
+          onPressed: onPressed,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                if (value.icon != null) ...[
+                  value.icon!,
+                  const SizedBox(width: 8),
+                ],
+                Expanded(child: Text(value.title, style: style)),
+                if (isSelected) ...[
+                  const SizedBox(width: 8),
+                  const Icon(Icons.check_rounded),
+                ],
+              ],
+            ),
+          ),
         );
       },
     );
