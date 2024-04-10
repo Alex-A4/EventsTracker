@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 

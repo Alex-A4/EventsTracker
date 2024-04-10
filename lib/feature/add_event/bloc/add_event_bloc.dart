@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:events_tracker/app/services/services.dart';
-import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'add_event_state.dart';

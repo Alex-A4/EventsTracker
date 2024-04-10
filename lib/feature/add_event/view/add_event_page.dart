@@ -1,5 +1,5 @@
 import 'package:events_tracker/app/services/services.dart';
-import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/domain/domain.dart';
 import 'package:events_tracker/di/di.dart';
 import 'package:events_tracker/feature/add_event/add_event.dart';
 import 'package:events_tracker/generated/generated.dart';

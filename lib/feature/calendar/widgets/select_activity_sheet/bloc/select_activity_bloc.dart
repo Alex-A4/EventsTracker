@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:events_tracker/app/services/services.dart';
-import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/domain/domain.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

@@ -1,4 +1,4 @@
-import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/domain/domain.dart';
 import 'package:flutter/widgets.dart';
 
 /// Simple widget that displays color for event

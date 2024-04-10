@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/domain/domain.dart';
 
 part 'calendar_day_activities.freezed.dart';
 part 'calendar_day_activities.g.dart';

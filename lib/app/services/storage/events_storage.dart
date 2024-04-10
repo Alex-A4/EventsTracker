@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:events_tracker/app/services/storage/storage.dart';
-import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/domain/domain.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/subjects.dart';
 

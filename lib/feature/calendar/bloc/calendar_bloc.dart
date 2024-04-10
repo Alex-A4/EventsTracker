@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:events_tracker/app/services/services.dart';
-import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'calendar_bloc_event.dart';

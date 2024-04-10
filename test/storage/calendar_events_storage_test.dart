@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:events_tracker/app/services/services.dart';
-import 'package:events_tracker/data/data.dart';
+import 'package:events_tracker/domain/domain.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
