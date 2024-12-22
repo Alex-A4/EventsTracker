@@ -2,7 +2,7 @@ import 'package:events_tracker/di/di.dart';
 import 'package:events_tracker/feature/calendar/calendar.dart';
 import 'package:events_tracker/feature/calendar/widgets/select_activity_sheet/bloc/select_activity_bloc.dart';
 import 'package:events_tracker/feature/settings/settings.dart';
-import 'package:events_tracker/feature/widgets/widgets.dart';
+import '../../../../../packages/ui_kit/lib/widgets/widgets.dart';
 import 'package:events_tracker/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

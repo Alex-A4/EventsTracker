@@ -1,4 +1,4 @@
-import 'package:events_tracker/feature/add_event/add_event.dart';
+import '../../../../packages/add_event/lib/add_event/add_event.dart';
 import 'package:events_tracker/feature/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

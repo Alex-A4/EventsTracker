@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:events_tracker/domain/domain.dart';
 import 'package:events_tracker/feature/calendar/calendar.dart';
-import 'package:events_tracker/feature/widgets/widgets.dart';
+import '../../../../packages/ui_kit/lib/widgets/widgets.dart';
 import 'package:events_tracker/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
