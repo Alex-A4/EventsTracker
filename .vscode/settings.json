@@ -1,11 +1,12 @@
 {
-    "dart.lineLength": 100,
-    "[dart]": {
-        "editor.rulers": [
-            100
-        ],
-        "editor.wordWrapColumn": 100,
-        "prettier.printWidth": 100,
-        "dart.lineLength": 100,
-    }
+  "dart.lineLength": 100,
+  "[dart]": {
+    "editor.rulers": [
+      100
+    ],
+    "editor.wordWrapColumn": 100,
+    "prettier.printWidth": 100,
+    "dart.lineLength": 100
+  },
+  "dart.flutterSdkPath": ".fvm/versions/stable"
 }

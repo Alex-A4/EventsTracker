@@ -49,3 +49,6 @@ bin/
 *.g.dart
 *.freezed.dart
 *.config.dart
+
+# FVM Version Cache
+.fvm/
