@@ -1,18 +1,16 @@
-import 'dart:ui';
-
-import 'package:add_event/domain/domain.dart';
-import 'package:collection/collection.dart';
+import 'package:calendar/data/data.dart';
+import 'package:calendar/domain/domain.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// Service that allows combine [CalendarActivitiesStorage] and [EventsStorage] and
 /// built logic on top of this data.
-class CalendarService {
+class CalendarActivitiesService {
   final CalendarActivitiesStorage calendarStorage;
-  final EventsStorage eventsStorage;
+  final EventsListAdapter eventsAdapter;
 
-  CalendarService({
+  CalendarActivitiesService({
     required this.calendarStorage,
-    required this.eventsStorage,
+    required this.eventsAdapter,
   });
 
   /// See [mappedEventsActivityStream] for docs
@@ -25,11 +23,11 @@ class CalendarService {
     // skip 1 to avoid duplicate
     calendarStorage.calendarActivitiesStream.skip(1).listen(
           (acts) => _mapCalendarAndEvents(
-            events: eventsStorage.eventsList,
+            events: eventsAdapter.eventsList,
             activities: acts,
           ),
         );
-    eventsStorage.eventsStream.skip(1).listen(
+    eventsAdapter.eventsStream.skip(1).listen(
           (events) => _mapCalendarAndEvents(
             events: events,
             activities: calendarStorage.calendarActivities,
@@ -37,7 +35,7 @@ class CalendarService {
         );
 
     _mapCalendarAndEvents(
-      events: eventsStorage.eventsList,
+      events: eventsAdapter.eventsList,
       activities: calendarStorage.calendarActivities,
     );
   }
@@ -63,11 +61,8 @@ class CalendarService {
   /// Getter for [mappedEventsStream]
   List<EventModelWithStatistic> get mappedEvents => _mappedEventsSubject.value;
 
-  /// Proxy for getting current available events
-  Stream<List<EventModel>> get eventsStream => eventsStorage.eventsStream;
-
   void _mapCalendarAndEvents({
-    required List<EventModel> events,
+    required List<EventModelForActivity> events,
     required Map<DateTime, CalendarDayActivities> activities,
   }) {
     final dayStatistics = <DateTime, CalendarDayStatistics>{};
@@ -158,13 +153,6 @@ class CalendarService {
     }).toList());
   }
 
-  /// Proxy method to remove event by its id
-  Future<void> removeEvent(String id) => eventsStorage.removeEvent(id);
-
-  /// Get event by id or null if there is no such one
-  EventModel? getEventById(String eventId) =>
-      eventsStorage.eventsList.firstWhereOrNull((e) => e.id == eventId);
-
   /// Proxy method to increase activity for specified event, task and date
   Future<void> increaseDayActivity({
     required String eventId,
@@ -178,32 +166,4 @@ class CalendarService {
         date: date,
         increaseCount: increaseCount,
       );
-
-  /// Create new event
-  Future<void> createEvent({
-    required String eventName,
-    required Color color,
-    required List<EventTask> tasks,
-  }) async {
-    await eventsStorage.addEvent(
-      EventModel.create(eventTitle: eventName, tasks: tasks, color: color),
-    );
-  }
-
-  /// Update old event in storage with new data
-  Future<void> updateEvent({
-    required String eventId,
-    required String eventName,
-    required Color color,
-    required List<EventTask> tasks,
-  }) async {
-    await eventsStorage.updateEvent(
-      EventModel(
-        id: eventId,
-        eventTitle: eventName,
-        tasks: tasks,
-        color: color,
-      ),
-    );
-  }
 }

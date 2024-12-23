@@ -37,7 +37,7 @@ class AddEventBloc extends Bloc<AddEventEvent, AddEventState> {
   }
 
   EventModel? oldEvent;
-  final CalendarService service;
+  final AddEventService service;
 
   void _registerHandlers() {
     on<CreateEvent>(

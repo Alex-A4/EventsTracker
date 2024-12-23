@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:events_tracker/domain/domain.dart';
+import 'package:calendar/domain/domain.dart';
 
 /// Planned event that will be displayed information about some event and requried actions to
 /// complete it.

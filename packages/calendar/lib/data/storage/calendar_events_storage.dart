@@ -1,21 +1,19 @@
 import 'dart:convert';
 
-import 'package:events_tracker/app/services/storage/storage.dart';
-import 'package:events_tracker/domain/domain.dart';
-import 'package:injectable/injectable.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:calendar/data/data.dart';
+import 'package:calendar/domain/domain.dart';
+import 'package:core/core.dart';
+import 'package:rxdart/rxdart.dart';
 
 const _calendarActivitiesKey = 'calendarActivities';
 
 /// Calendar storage that stores information about activities that user had marked on calendar
 /// specified for some events.
-@singleton
 class CalendarActivitiesStorage {
   final SharedWrapper shared;
 
   CalendarActivitiesStorage({required this.shared});
 
-  @PostConstruct()
   void init() {
     final activities = shared.getString(_calendarActivitiesKey);
 
@@ -26,7 +24,8 @@ class CalendarActivitiesStorage {
         Map.fromEntries(
           jsonList.map(
             (e) {
-              final c = CalendarDayActivities.fromJson(e);
+              final c =
+                  CalendarActivityMapperToEntity(CalendarDayActivitiesDto.fromJson(e)).transform();
               return MapEntry(c.date, c);
             },
           ),
@@ -153,7 +152,9 @@ class CalendarActivitiesStorage {
   ) async {
     await shared.setString(
       _calendarActivitiesKey,
-      jsonEncode(activities.values.map((e) => e.toJson()).toList()),
+      jsonEncode(
+        activities.values.map((e) => CalendarActivityMapperToDto(e).transform().toJson()).toList(),
+      ),
     );
     _calendarActivitiesSubject.add(activities);
   }

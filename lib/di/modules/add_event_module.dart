@@ -5,10 +5,8 @@ import 'package:add_event/add_event.dart';
 @module
 abstract class AddEventModule {
   @singleton
-  CalendarService calendarService(
-    EventsStorage eventsStorage,
-  ) =>
-      CalendarService(eventsStorage: eventsStorage)..init();
+  AddEventService calendarService(EventsStorage eventsStorage) =>
+      AddEventService(eventsStorage: eventsStorage);
 
   @singleton
   EventsStorage eventsStorage(SharedWrapper wrapper) => EventsStorage(shared: wrapper)..init();

@@ -24,6 +24,8 @@ dependencies:
   freezed_annotation: ^2.4.1
   add_event:
     path: packages/add_event
+  calendar:
+    path: packages/calendar
   core:
     path: packages/core
 
