@@ -1,7 +1,6 @@
 library settings;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'ui/ui.dart';
+export 'domain/domain.dart';
+export 'data/data.dart';
+export 'settings_navigation.dart';

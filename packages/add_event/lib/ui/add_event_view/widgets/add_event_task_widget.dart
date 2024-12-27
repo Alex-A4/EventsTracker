@@ -4,13 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_kit/ui_kit.dart';
 
+abstract class AddEventTaskWidgetTexts {
+  /// Title of input for task name
+  String get taskNameTitle;
+
+  /// Hint of input for task name
+  String get taskNameHint;
+
+  /// Title of input for task plan
+  String get planTitle;
+
+  /// Hint of input for task plan
+  String get planHint;
+
+  /// Description of input for task plan
+  String get planDescription;
+}
+
 class AddEventTaskWidget extends StatefulWidget {
   const AddEventTaskWidget({
     required this.task,
+    required this.texts,
     super.key,
   });
 
   final EventTask task;
+  final AddEventTaskWidgetTexts texts;
 
   @override
   State<AddEventTaskWidget> createState() => _AddEventTaskWidgetState();
@@ -100,8 +119,8 @@ class _AddEventTaskWidgetState extends State<AddEventTaskWidget> {
           focusNode: _nameFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
-          title: LocaleKeys.taskNameTitle.tr(),
-          hintText: LocaleKeys.taskNameHint.tr(),
+          title: widget.texts.taskNameTitle,
+          hintText: widget.texts.taskNameHint,
           action: PrimaryIconButton(
             onPressed: () => context.read<AddEventBloc>().add(RemoveTask(id: widget.task.id)),
             icon: const Icon(Icons.delete, color: Colors.red),
@@ -111,9 +130,9 @@ class _AddEventTaskWidgetState extends State<AddEventTaskWidget> {
         AmountInputWidget(
           focus: _planFocus,
           controller: _planController,
-          title: LocaleKeys.planTitle.tr(),
-          subtitle: LocaleKeys.planDescription.tr(),
-          hintText: LocaleKeys.planHint.tr(),
+          title: widget.texts.planTitle,
+          subtitle: widget.texts.planDescription,
+          hintText: widget.texts.planHint,
           increaseCallback: () => context.read<AddEventBloc>().add(
                 ChangeTaskPlan(id: widget.task.id, plan: widget.task.plan + 1),
               ),

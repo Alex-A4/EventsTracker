@@ -5,5 +5,5 @@ import 'package:injectable/injectable.dart';
 abstract class CoreModule {
   @singleton
   @preResolve
-  Future<SharedWrapper> get sharedWrapper => SharedWrapper.init();
+  Future<SharedWrapper> get sharedWrapper => SharedWrapper().init();
 }

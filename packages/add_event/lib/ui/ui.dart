@@ -2,7 +2,6 @@ export 'add_event_view/add_event_view.dart';
 export 'add_event_view/bloc/add_event_bloc.dart';
 export 'add_event_view/bloc/add_event_event.dart';
 export 'add_event_view/bloc/add_event_state.dart';
-export 'add_event_view/view/add_event_page.dart';
 export 'add_event_view/view/add_event_view.dart';
 export 'add_event_view/view/view.dart';
 export 'add_event_view/widgets/add_event_task_widget.dart';

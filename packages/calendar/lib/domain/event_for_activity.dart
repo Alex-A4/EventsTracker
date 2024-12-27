@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:equatable/equatable.dart';
+
 /// !!!
 /// This model is copy from add_event package, but it's used only to map events to activity
 /// !!!
@@ -8,7 +10,7 @@ import 'dart:ui';
 /// complete it.
 /// This event is just a description on general plans. To specify tasks inside this plan, see
 /// [EventTaskForActivity].
-class EventModelForActivity {
+class EventModelForActivity extends Equatable {
   final String id;
   final String eventTitle;
   // list of tasks that should be completed to complete event in general
@@ -23,6 +25,9 @@ class EventModelForActivity {
     required this.tasks,
     required this.color,
   });
+
+  @override
+  List<Object?> get props => [id, eventTitle, tasks, color];
 }
 
 /// !!!
@@ -34,7 +39,7 @@ class EventModelForActivity {
 /// While [EventModelForActivity] is a general plan, for example, `Boxing`.
 /// [EventTaskForActivity] is a sub-task of `Boxing`, for example:
 /// `Visit 50 trainings` or `Make 10000 push-ups`
-class EventTaskForActivity {
+class EventTaskForActivity extends Equatable {
   final String id;
   final String taskName;
 
@@ -46,4 +51,7 @@ class EventTaskForActivity {
     required this.taskName,
     required this.plan,
   });
+
+  @override
+  List<Object?> get props => [id, taskName, plan];
 }

@@ -9,9 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  expandable: ^5.0.1
-  flutter_slidable: ^3.0.1
-  table_calendar: ^3.0.9
   bloc: ^8.1.2
   flutter_bloc: ^8.1.3
   easy_localization: ^3.0.7
@@ -26,8 +23,12 @@ dependencies:
     path: packages/add_event
   calendar:
     path: packages/calendar
+  settings:
+    path: packages/settings
   core:
     path: packages/core
+  ui_kit:
+    path: packages/ui_kit
 
 dev_dependencies:
   flutter_test:

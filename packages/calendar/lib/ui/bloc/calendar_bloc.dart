@@ -1,0 +1,40 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:calendar/data/data.dart';
+import 'package:calendar/domain/domain.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'calendar_bloc_event.dart';
+part 'calendar_bloc_state.dart';
+part 'calendar_bloc.freezed.dart';
+
+/// Bloc that produces list of activities to UI and reacts for changing it
+class CalendarBloc extends Bloc<CalendarBlocEvent, CalendarBlocState> {
+  CalendarBloc({
+    required this.calendarService,
+  }) : super(const CalendarBlocState(activities: {})) {
+    _registerHandlers();
+
+    _activitiesSub = calendarService.mappedEventsActivityStream.listen(
+      (acts) => add(CalendarBlocEvent.updateActivities(acts)),
+    );
+  }
+
+  late StreamSubscription<dynamic> _activitiesSub;
+
+  final CalendarActivitiesService calendarService;
+
+  void _registerHandlers() {
+    on<_UpdateActivities>(
+      (event, emit) => emit(state.copyWith(activities: event.activities)),
+    );
+  }
+
+  @override
+  Future<void> close() {
+    _activitiesSub.cancel();
+
+    return super.close();
+  }
+}

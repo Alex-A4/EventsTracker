@@ -3,15 +3,37 @@ import 'package:ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+abstract class AddEventViewTexts {
+  ColorPickerWidgetTexts get colorPickerTexts;
+  AddEventTaskWidgetTexts get addTaskTexts;
+
+  /// Title of input where user should enter event name
+  String get eventNameTitle;
+
+  /// Hint of input where user should enter event name
+  String get eventNameHint;
+
+  /// Text of the button that user should click to add new task in list
+  String get addNewTask;
+
+  /// Text of button that user should click to update exising event
+  String get updateWord;
+
+  /// Text of button that user should click to create entered event
+  String get createWord;
+}
+
 class AddEventView extends StatefulWidget {
   const AddEventView({
     required this.state,
     required this.isUpdate,
+    required this.texts,
     super.key,
   });
 
   final AddEventState state;
   final bool isUpdate;
+  final AddEventViewTexts texts;
 
   @override
   State<AddEventView> createState() => _AddEventViewState();
@@ -53,8 +75,8 @@ class _AddEventViewState extends State<AddEventView> {
               children: [
                 InputWidget(
                   controller: _eventNameController,
-                  title: LocaleKeys.eventNameTitle.tr(),
-                  hintText: LocaleKeys.eventNameHint.tr(),
+                  title: widget.texts.eventNameTitle,
+                  hintText: widget.texts.eventNameHint,
                   onChanged: (name) => context.read<AddEventBloc>().add(RenameEvent(name: name)),
                 ),
                 const SizedBox(height: 20),
@@ -63,18 +85,23 @@ class _AddEventViewState extends State<AddEventView> {
                   onSelected: (color) => context.read<AddEventBloc>().add(
                         ChangeColor(color: color),
                       ),
+                  texts: widget.texts.colorPickerTexts,
                 ),
                 const SizedBox(height: 20),
                 ...widget.state.tasks
                     .map<Widget>(
-                      (t) => AddEventTaskWidget(task: t, key: Key(t.id)),
+                      (t) => AddEventTaskWidget(
+                        task: t,
+                        key: Key(t.id),
+                        texts: widget.texts.addTaskTexts,
+                      ),
                     )
                     .separated(const SizedBox(height: 16)),
                 PrimaryTextButton(
                   onPressed: () => context.read<AddEventBloc>().add(
                         const AddNewTask(),
                       ),
-                  text: LocaleKeys.addNewTask.tr(),
+                  text: widget.texts.addNewTask,
                 ),
               ],
             ),
@@ -90,7 +117,7 @@ class _AddEventViewState extends State<AddEventView> {
               onPressed: widget.state.isLoading
                   ? null
                   : () => context.read<AddEventBloc>().add(const CreateEvent()),
-              text: widget.isUpdate ? LocaleKeys.updateWord.tr() : LocaleKeys.createWord.tr(),
+              text: widget.isUpdate ? widget.texts.updateWord : widget.texts.createWord,
             ),
           ),
         ),

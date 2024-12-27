@@ -1,3 +1,3 @@
-export 'view/view.dart';
-export 'bloc/bloc.dart';
-export 'widgets/widgets.dart';
+export 'adapters/adapters.dart';
+export 'settings_page.dart';
+export 'texts/texts.dart';

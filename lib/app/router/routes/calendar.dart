@@ -1,5 +1,5 @@
 import 'package:events_tracker/app/router/router.dart';
-import 'package:events_tracker/feature/calendar/calendar.dart';
+import 'package:events_tracker/feature/feature.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

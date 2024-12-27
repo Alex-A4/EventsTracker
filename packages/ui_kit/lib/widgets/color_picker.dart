@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 /// Class with localization strings for [ColorPickerWidget]
 abstract class ColorPickerWidgetTexts {
   /// Title for tile that should ask user to change color
-  /// TODO: LocaleKeys.eventColorTitle.tr()
   String get eventColorTitle;
 
   /// Text for button that allows user to change color
-  /// TODO: LocaleKeys.changeWord.tr()
   String get changeWord;
 }
 

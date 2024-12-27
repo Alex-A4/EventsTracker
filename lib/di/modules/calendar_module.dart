@@ -1,7 +1,7 @@
 import 'package:add_event/add_event.dart';
 import 'package:calendar/calendar.dart';
 import 'package:core/core.dart';
-import 'package:events_tracker/feature/calendar/integrations/events_list_adapter_impl.dart';
+import 'package:events_tracker/feature/calendar_integrations/adapters/events_list_adapter_impl.dart';
 import 'package:injectable/injectable.dart';
 
 @module
