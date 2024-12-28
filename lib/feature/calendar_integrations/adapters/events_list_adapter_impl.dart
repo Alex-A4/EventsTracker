@@ -3,16 +3,16 @@ import 'package:calendar/calendar.dart';
 
 /// Adapter that allows convert events from `add_event` package to `calendar` package's events
 class EventsListAdapterImpl implements EventsListAdapter {
-  final EventsStorage eventsStorage;
+  final AddEventService eventsService;
 
-  EventsListAdapterImpl({required this.eventsStorage});
+  EventsListAdapterImpl({required this.eventsService});
 
   @override
-  List<EventModelForActivity> get eventsList => _mapEvents(eventsStorage.eventsList);
+  List<EventModelForActivity> get eventsList => _mapEvents(eventsService.eventsList);
 
   @override
   Stream<List<EventModelForActivity>> get eventsStream =>
-      eventsStorage.eventsStream.map(_mapEvents);
+      eventsService.eventsStream.map(_mapEvents);
 
   List<EventModelForActivity> _mapEvents(List<EventModel> events) {
     return events

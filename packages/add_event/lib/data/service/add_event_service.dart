@@ -13,6 +13,7 @@ class AddEventService {
 
   /// Proxy for getting current available events
   Stream<List<EventModel>> get eventsStream => eventsStorage.eventsStream;
+  List<EventModel> get eventsList => eventsStorage.eventsList;
 
   /// Proxy method to remove event by its id
   Future<void> removeEvent(String id) => eventsStorage.removeEvent(id);

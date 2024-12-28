@@ -8,16 +8,16 @@ import 'package:injectable/injectable.dart';
 abstract class CalendarModule {
   @singleton
   CalendarActivitiesStorage calendarStorage(SharedWrapper shared) =>
-      CalendarActivitiesStorage(shared: shared);
+      CalendarActivitiesStorage(shared: shared)..init();
 
   @singleton
   CalendarActivitiesService calendarActivitiesService(
     CalendarActivitiesStorage storage,
     EventsListAdapter adapter,
   ) =>
-      CalendarActivitiesService(calendarStorage: storage, eventsAdapter: adapter);
+      CalendarActivitiesService(calendarStorage: storage, eventsAdapter: adapter)..init();
 
   @factoryMethod
-  EventsListAdapter eventsListAdapter(EventsStorage eventsStorage) =>
-      EventsListAdapterImpl(eventsStorage: eventsStorage);
+  EventsListAdapter eventsListAdapter(AddEventService eventsService) =>
+      EventsListAdapterImpl(eventsService: eventsService);
 }
