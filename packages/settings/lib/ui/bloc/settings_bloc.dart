@@ -1,12 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:settings/settings.dart';
-
-part 'settings_event.dart';
-part 'settings_state.dart';
-part 'settings_bloc.freezed.dart';
 
 /// Bloc that allows viewing list of events
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
@@ -14,7 +9,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     _registerHandlers();
 
     _eventsSub = eventsAdapter.mappedEventsStream.listen(
-      (events) => add(SettingsEvent.updateEvents(events)),
+      (events) => add(UpdateSettingsEvent(events)),
     );
   }
 
@@ -23,10 +18,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   late StreamSubscription<dynamic> _eventsSub;
 
   void _registerHandlers() {
-    on<_UpdateEvents>(
-      (event, emit) => emit(state.copyWith(events: event.events)),
+    on<UpdateSettingsEvent>(
+      (event, emit) => emit(SettingsState(events: event.events)),
     );
-    on<_RemoveEvent>(
+    on<RemoveSettingsEvent>(
       (event, emit) => eventsAdapter.removeEvent(event.eventId),
     );
   }

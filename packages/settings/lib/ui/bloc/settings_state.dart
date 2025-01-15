@@ -1,7 +1,11 @@
-part of 'settings_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:settings/domain/domain.dart';
 
-@freezed
-class SettingsState with _$SettingsState {
-  const factory SettingsState({required List<EventModelWithStatisticForSettings> events}) =
-      _SettingsState;
+class SettingsState extends Equatable {
+  final List<EventModelWithStatisticForSettings> events;
+
+  const SettingsState({required this.events});
+
+  @override
+  List<Object?> get props => [events];
 }

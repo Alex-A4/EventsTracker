@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:equatable/equatable.dart';
 import 'package:settings/domain/domain.dart';
 
 /// Planned event that will be displayed information about some event and requried actions to
@@ -8,7 +9,7 @@ import 'package:settings/domain/domain.dart';
 /// [EventTaskWithStatisticForSettings].
 ///
 /// This model is different from <EventModel> becuse this contains statistics about completions.
-class EventModelWithStatisticForSettings {
+class EventModelWithStatisticForSettings extends Equatable {
   const EventModelWithStatisticForSettings({
     required this.id,
     required this.eventTitle,
@@ -27,6 +28,9 @@ class EventModelWithStatisticForSettings {
 
   int get completedGeneralPercent =>
       tasks.fold(0, (v, e) => v + e.completedGeneralPercent) ~/ tasks.length.toDouble();
+
+  @override
+  List<Object?> get props => [id, eventTitle, tasks, color];
 }
 
 /// One task from [EventModelWithStatisticForSettings] that allows specify different types of
@@ -36,7 +40,7 @@ class EventModelWithStatisticForSettings {
 /// `Visit 50 trainings` or `Make 10000 push-ups`
 ///
 /// This model is different from <EventTask> becuse this contains statistics about completions.
-class EventTaskWithStatisticForSettings {
+class EventTaskWithStatisticForSettings extends Equatable {
   const EventTaskWithStatisticForSettings({
     required this.id,
     required this.taskName,
@@ -60,4 +64,7 @@ class EventTaskWithStatisticForSettings {
   final Map<DateTime, CalendarDayTaskStatisticsForSettings> completionsByDays;
 
   int get completedGeneralPercent => (completedGeneral / plan.toDouble() * 100).toInt();
+
+  @override
+  List<Object?> get props => [id, taskName, plan, completedGeneral, completionsByDays];
 }

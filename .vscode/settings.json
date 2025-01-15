@@ -8,5 +8,5 @@
     "prettier.printWidth": 100,
     "dart.lineLength": 100
   },
-  "dart.flutterSdkPath": ".fvm/versions/stable"
+  "dart.flutterSdkPath": ".fvm/versions/3.27.1"
 }

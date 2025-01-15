@@ -1,9 +1,17 @@
-part of 'settings_bloc.dart';
+import 'package:settings/domain/domain.dart';
 
-@freezed
-class SettingsEvent with _$SettingsEvent {
-  const factory SettingsEvent.updateEvents(List<EventModelWithStatisticForSettings> events) =
-      _UpdateEvents;
+sealed class SettingsEvent {
+  const SettingsEvent();
+}
 
-  const factory SettingsEvent.removeEvent(String eventId) = _RemoveEvent;
+class UpdateSettingsEvent extends SettingsEvent {
+  final List<EventModelWithStatisticForSettings> events;
+
+  const UpdateSettingsEvent(this.events);
+}
+
+class RemoveSettingsEvent extends SettingsEvent {
+  final String eventId;
+
+  const RemoveSettingsEvent(this.eventId);
 }

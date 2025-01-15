@@ -88,7 +88,7 @@ class _EventAndTasksSettingsWidgetState extends State<EventAndTasksSettingsWidge
                   await widget.navigationAdapter.showConfirmRemoveEventSheet(context, widget.event);
 
               if (result && context.mounted) {
-                context.read<SettingsBloc>().add(SettingsEvent.removeEvent(widget.event.id));
+                context.read<SettingsBloc>().add(RemoveSettingsEvent(widget.event.id));
               }
             },
           ),

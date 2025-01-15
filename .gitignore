@@ -46,9 +46,7 @@ bin/
 .DS_Store
 
 ### Generated ###
-*.g.dart
-*.freezed.dart
-*.config.dart
+pubspec_overrides.yaml
 
 # FVM Version Cache
 .fvm/
